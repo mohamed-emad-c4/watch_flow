@@ -39,9 +39,9 @@ icons_launcher:
       enable: true
     ios:
       enable: true
-  image_path: "assets/images/icon/launcher_icon.png"
+  image_path: assets/images/icon/icone.jpg
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/images/icon/launcher_icon.png"
+  adaptive_icon_foreground: assets/images/icon/icone.jpg
   assets:
     - assets/images/
     - assets/images/icon/

@@ -71,7 +71,7 @@ class matrial extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const Setting(isDarkMode: true)
-      home:  isIntialized ? const Home() : const PageViewInitial(),
+      home:  const Home(),
     );
   }
 }
