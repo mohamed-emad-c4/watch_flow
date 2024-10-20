@@ -10,7 +10,7 @@ import '../../../data/databases.dart';
 import '../../VideoPreviewScreen.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({super.key, required bool isIntialized});
 
   @override
   Widget build(BuildContext context) {
@@ -180,10 +180,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   ),
                                   child: Tooltip(
                                     message: playlist['playlist_real_name'] ??
-                                        'No Title',
+                                        S.of(context).notitle,
                                     child: Text(
                                       playlist['playlist_real_name'] ??
-                                          'No Title',
+                                          S.of(context).notitle,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,

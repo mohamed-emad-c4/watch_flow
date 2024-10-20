@@ -108,5 +108,6 @@
     "enter_time_in_minutes":"Please enter the time in minutes",
     "invalid_playlist_url": "Invalid playlist URL",
     "please_enter_a_valid_time": "Please enter a valid time",
-    "please_enter_time": "Please enter time"
+    "please_enter_time": "Please enter time",
+    "notitle": "No Title"
 }

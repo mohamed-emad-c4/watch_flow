@@ -110,5 +110,6 @@
     "enter_time_in_minutes":"الرجاء ادخال الوقت بالدقائق",
     "invalid_playlist_url": "الرابط المحدد غير صالح",
     "please_enter_a_valid_time": "الرجاء ادخال وقت صالح",
-    "please_enter_time": "الرجاء ادخال الوقت"
+    "please_enter_time": "الرجاء ادخال الوقت",
+    "notitle": "لا يوجد عنوان"
 }
