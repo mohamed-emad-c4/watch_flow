@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:watch_flow/generated/l10n.dart';
 import 'package:watch_flow/logic/cubit/update_home_cubit.dart';
+import 'package:watch_flow/view/VideoPreviewScreen.dart';
 import 'package:watch_flow/view/screens/intail/addPlayList.dart';
 import 'package:watch_flow/view/screens/roadmap/all_days_view_roadmap.dart';
+import 'package:watch_flow/view/settings.dart';
 
 import '../../../data/databases.dart';
-import '../../VideoPreviewScreen.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key, required bool isIntialized});
@@ -58,9 +59,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             onPressed: () {
               // Toggle dark mode
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AllDaysRoadmap()));
+                  context, MaterialPageRoute(builder: (context) => Setting()));
             },
           ),
         ],

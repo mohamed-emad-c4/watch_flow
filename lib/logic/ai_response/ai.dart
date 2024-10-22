@@ -144,7 +144,8 @@ remember aproximately in $numberDays days and the total duration is approximatel
 - Analyze the total duration of the playlist and create a structured learning plan.
 - Ensure that if any video exceeds $durationOfDay minutes, it should be split across days.
 """;
-      log("$totalVideos \n $totalTime   \n $numberDays \n $durationOfDay ");
+      log(prompt);
+      // log("$totalVideos \n $totalTime   \n $numberDays \n $durationOfDay ");
       // Generate content using the generative model
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);

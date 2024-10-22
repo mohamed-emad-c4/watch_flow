@@ -29,7 +29,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
     final playlist = await DatabaseHelper().getPlaylistById(widget.playlistId);
     setState(() {
       widget.allInfoPlaylist = playlist;
-      _isPlaylistInfoLoaded = true; // تم تحميل بيانات القائمة
+      _isPlaylistInfoLoaded = true;
     });
   }
 
@@ -109,9 +109,10 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                                   ),
                                   Text(
                                     " ${video['video_duration']}",
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                       fontSize: 12,
-                                      color: Colors.grey,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const SizedBox(height: 8.0),

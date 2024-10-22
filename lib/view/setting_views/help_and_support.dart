@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/l10n.dart';
+import '../screens/intail/widgets/build_circle_button.dart';
+import '../screens/intail/widgets/social_media_bottum.dart';
 
 class HelpAndSupportPage extends StatelessWidget {
   const HelpAndSupportPage({super.key});
@@ -30,30 +32,16 @@ class HelpAndSupportPage extends StatelessWidget {
                 S.of(context).WeAreHereToHelp,
                 style: const TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 12),
-              Text(
-                S.of(context).FAQ,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              BulletPoint(text: S.of(context).ResetPassword),
-              BulletPoint(text: S.of(context).ChangeEmail),
-              BulletPoint(text: S.of(context).ContactSupport),
               const SizedBox(height: 20),
-              Text(
-                S.of(context).DidntFindAnswer,
-                style: const TextStyle(fontSize: 16),
-              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildCircleButton(
-                    context,
+                  BuildCircleButton(
                     icon: const FaIcon(FontAwesomeIcons.envelope),
                     label: S.of(context).EmailUs,
                     onTap: _sendEmail,
+                    color: Colors.red[400]!,
                   ),
                 ],
               ),
@@ -69,7 +57,7 @@ class HelpAndSupportPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialMediaButton(
+                    BuildSocialMediaButton(
                       context,
                       icon: const FaIcon(FontAwesomeIcons.whatsapp),
                       label: S.of(context).WhatsApp,
@@ -77,15 +65,15 @@ class HelpAndSupportPage extends StatelessWidget {
                       onTap: _contactViaWhatsApp,
                     ),
                     const SizedBox(width: 20),
-                    _buildSocialMediaButton(
+                    BuildSocialMediaButton(
                       context,
                       icon: const FaIcon(FontAwesomeIcons.facebook),
                       label: S.of(context).Messenger,
-                      color: Colors.blue,
+                      color: Colors.blue[700]!,
                       onTap: _contactViaMessenger,
                     ),
                     const SizedBox(width: 20),
-                    _buildSocialMediaButton(
+                    BuildSocialMediaButton(
                       context,
                       icon: const FaIcon(FontAwesomeIcons.twitter),
                       label: S.of(context).Twitter,
@@ -93,11 +81,11 @@ class HelpAndSupportPage extends StatelessWidget {
                       onTap: _contactViaTwitter,
                     ),
                     const SizedBox(width: 20),
-                    _buildSocialMediaButton(
+                    BuildSocialMediaButton(
                       context,
                       icon: const FaIcon(FontAwesomeIcons.instagram),
                       label: S.of(context).Instagram,
-                      color: Colors.purple,
+                      color: Colors.purpleAccent,
                       onTap: _contactViaInstagram,
                     ),
                   ],
@@ -114,57 +102,6 @@ class HelpAndSupportPage extends StatelessWidget {
       ),
     );
   }
-
-  // بقية الأكواد كما هي بدون تغيير
-}
-
-// Widget for creating circular buttons
-Widget _buildCircleButton(
-  BuildContext context, {
-  required FaIcon icon,
-  required String label,
-  required VoidCallback onTap,
-}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Column(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Theme.of(context).primaryColor,
-          child: icon,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ],
-    ),
-  );
-}
-
-// Widget for creating social media buttons
-Widget _buildSocialMediaButton(
-  BuildContext context, {
-  required FaIcon icon,
-  required String label,
-  required Color color,
-  required VoidCallback onTap,
-}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Column(
-      children: [
-        CircleAvatar(radius: 30, backgroundColor: color, child: icon),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ],
-    ),
-  );
 }
 
 void _sendEmail() async {
@@ -239,30 +176,5 @@ void _contactViaInstagram() async {
     await launch(instagramUri.toString());
   } else {
     Get.snackbar("Error", "'Could not launch Instagram");
-  }
-}
-
-class BulletPoint extends StatelessWidget {
-  final String text;
-
-  const BulletPoint({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          const Icon(Icons.brightness_1, size: 6),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
