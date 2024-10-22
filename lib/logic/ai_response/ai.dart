@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:google_generative_ai/google_generative_ai.dart';
-
 import '../../data/databases.dart';
 import '../helper.dart';
 
@@ -11,69 +10,106 @@ const String giminiAiApiKey = "AIzaSyCLPtP-PRbk5R11EUZbpYdM1USwPRyHj5o";
 class GiminiAi {
   List<Map<String, dynamic>> playlistInfo = [];
   List<Map<String, dynamic>> allInfoPlaylist = [];
- 
+
   Future<void> aiResponse(int durationOfDay, String playlistId) async {
-    int numberDays = 0;
     try {
-      log("started aiResponse");
-      // Fetch playlist information from the database
-      playlistInfo = await DatabaseHelper().getPlaylistById(playlistId);
-      if (playlistInfo.isEmpty) {
-        log("Playlist not found in the database.");
+      log("Started AI Response for playlist ID: $playlistId");
+
+      // Fetch playlist and video information
+      await _fetchPlaylistInfo(playlistId);
+      await _fetchAllVideos(playlistId);
+
+      // Check for empty data
+      if (playlistInfo.isEmpty || allInfoPlaylist.isEmpty) {
+        log("No data found for playlist ID: $playlistId");
         return;
       }
 
-      // Fetch all videos in the playlist from the database
-      allInfoPlaylist =
-          await HelperFunction().getALLVideosINPlaylistIfoFromDB(playlistId);
-      if (allInfoPlaylist.isEmpty) {
-        log("No videos found in the playlist.");
-        return;
-      }
-
-      // Construct the list of videos with their titles and durations
-      String allVideos = "";
-      int videoIndex = 1;
-      for (var video in allInfoPlaylist) {
-        allVideos +=
-            "$videoIndex. ${video['video_tittle']}, ${video["video_duration"]} ${video["video_url"]} \n";
-        videoIndex++;
-      }
+      // Construct the list of videos with titles and durations
+      String allVideos = _constructVideosList();
 
       // Initialize the generative model
       final model = GenerativeModel(
-        model: 'gemini-1.5-flash-latest',
+        model: 'gemini-1.5-pro-002',
         apiKey: giminiAiApiKey,
       );
 
       // Extract total time and total videos from the playlist info
       String totalTime = playlistInfo[0]['playlist_total_time'];
-      String totalVideos = playlistInfo[0]["playlist_total_videos"];
-      numberDays = HelperFunction().timeToMinutes(totalTime) ~/ durationOfDay;
-log("numberDays :: $numberDays :: $durationOfDay ::  HelperFunction().timeToMinutes(totalTime) :: ${HelperFunction().timeToMinutes(totalTime)}");
+      String totalVideos = playlistInfo[0]['playlist_total_videos'];
+      int numberDays = _calculateNumberOfDays(totalTime, durationOfDay);
+      log("Number of Days: $numberDays, Duration per Day: $durationOfDay");
+
       // Construct the prompt for the generative AI
-      String prompt = """
-Your prompt can be improved by enhancing clarity, making the structure more readable,
- and ensuring that it efficiently guides the model toward the desired outcome. Here’s the refined version of your original prompt:
-Role:
+      String prompt = _createPrompt(
+          numberDays, durationOfDay, totalVideos, totalTime, allVideos);
+
+      // Generate content using the generative model
+      final content = [Content.text(prompt)];
+      final response = await model.generateContent(content);
+      log("AI Response: ${response.text}");
+      // Extract and parse the JSON response
+      String jsonPart = _extractJsonPart(response.text.toString());
+      if (jsonPart.isEmpty) {
+        log("Failed to extract JSON part from the response.");
+        return;
+      }
+
+      var decodedData = jsonDecode(jsonPart);
+      log("Decoded Data: $decodedData");
+    } catch (e, stackTrace) {
+      log("Error in aiResponse: $e", error: e, stackTrace: stackTrace);
+    }
+  }
+
+  Future<void> _fetchPlaylistInfo(String playlistId) async {
+    playlistInfo = await DatabaseHelper().getPlaylistById(playlistId);
+    if (playlistInfo.isEmpty) {
+      log("Playlist not found in the database.");
+    }
+  }
+
+  Future<void> _fetchAllVideos(String playlistId) async {
+    allInfoPlaylist =
+        await HelperFunction().getALLVideosINPlaylistIfoFromDB(playlistId);
+    if (allInfoPlaylist.isEmpty) {
+      log("No videos found in the playlist.");
+    }
+  }
+
+  String _constructVideosList() {
+    return allInfoPlaylist.asMap().entries.map((entry) {
+      var video = entry.value;
+      return "${entry.key + 1}. ${video['video_tittle']}, ${video['video_duration']} ${video['video_url']}";
+    }).join('\n');
+  }
+
+  int _calculateNumberOfDays(String totalTime, int durationOfDay) {
+    return (HelperFunction().timeToMinutes(totalTime) ~/ durationOfDay) + 1;
+  }
+
+  String _createPrompt(int numberDays, int durationOfDay, String totalVideos,
+      String totalTime, String allVideos) {
+    return """
 I am a mobile app developer working on a project using the Gemini API. You are an expert with 20 years of experience in creating educational roadmaps for online teaching.
 
 Task:
-every day approximately ($durationOfDay) minutes of video content.
-I need you to create a structured video learning plan from a YouTube playlist. The goal is to distribute approximately ($durationOfDay) minutes of video content per day. You will:
+- Analyze the total duration of the playlist and create a structured learning plan.
+- Ensure that if any video exceeds $durationOfDay minutes, it should be split across days.
+
 ### Input:
 - *Playlist Information*: The playlist will be provided as a structured input, including:
   - *Title*: "video Title"
-  - *Total Videos*: $totalVideos (e.g., 15)
-  - *Total Duration*: $totalTime (in HH:MM, e.g., 25:52 hours)
+  - *Total Videos*: $totalVideos
+  - *Total Duration*: $totalTime (in HH:MM)
   - *All Videos*: A list of videos with each video's title, duration (in HH:MM), and URL.
-  - *Learning Goal*: A summary of the learning goals and tasks for each day.
-  -** if video is log than ($durationOfDay) minutes pat it in next day.**
-  - *if video duration is not specified, assume it is 1 hour.*
+  - **If video is longer than ($durationOfDay) minutes, split it into the next day.**
+  - *If video duration is not specified, assume it is 1 hour.*
+
 ### Instructions:
 1. *Duration Analysis*: 
-   - Analyze the playlist's total duration and divide it into $numberDays days. Each day should aim for close to ($durationOfDay) minutes of video content.
-   - Ensure that daily video durations are as evenly distributed as possible across $numberDays days.
+   - Distribute the videos evenly over approximately $numberDays days to closely match the ($durationOfDay) minutes target.
+   - Ensure that daily video durations are as evenly distributed as possible across approximately $numberDays days.
   
 2. *Daily Breakdown*: 
    - For each day, provide a breakdown that includes:
@@ -82,28 +118,10 @@ I need you to create a structured video learning plan from a YouTube playlist. T
      - *Learning Goal*: Summarize the learning objectives or tasks for that day based on the content.
   
 3. *Output Format*:
-   
-Playlist Information:
-The playlist includes the following details:
+   - Return the response in JSON format, formatted to be directly inserted into a database.
+   - Ensure that each video’s URL is returned in the format: "https://www.youtube.com/watch?v=xxxxxxxxxx".
 
-Title: "تعلم HTML من الصفر: كورس تعلم تطوير وتصميم المواقع وبرمجة صفحات الويب بالعربي"
-Duration: 5:52 (example)
-URL: https://www.youtube.com/watch?v=xxxxxxxxxx
-Total Videos: $totalVideos
-Total Duration: $totalTime
-Here is the full playlist:
-$allVideos
-
-Instructions:
-1. Distribute the videos evenly over the days to closely match the ($durationOfDay) minutes target.
-2. Summarize the key information for each day's videos (title, duration, URL).
-3. Provide a brief learning task or goal description for each day based on the video content.
-4. Return the response in JSON format, formatted to be directly inserted into a database.
-5. Specify which day each video belongs to.
-6. Ensure that each video’s URL is returned in the format: "https://www.youtube.com/watch?v=xxxxxxxxxx".
-7.Summarize the key information for each  videos
 Example Response (JSON Format):
-
 [
   {
     "day": 1,
@@ -111,13 +129,13 @@ Example Response (JSON Format):
       {
         "title": "Introduction to HTML",
         "duration": "time",
-        "url": "https://www.youtube.com/watch?v=xxxxxxxxxx"
+        "url": "https://www.youtube.com/watch?v=xxxxxxxxxx",
         "learning_video_task": "Learn the basics of HTML and its syntax."
       },
       {
         "title": "HTML Tags",
         "duration": "1time",
-        "url": "https://www.youtube.com/watch?v=xxxxxxxxxx"
+        "url": "https://www.youtube.com/watch?v=xxxxxxxxxx",
         "learning_task": "Understand the basic structure of HTML and its various tags."
       }
     ],
@@ -130,7 +148,7 @@ Example Response (JSON Format):
       {
         "title": "CSS Basics",
         "duration": "time",
-        "url": "https://www.youtube.com/watch?v=xxxxxxxxxx"
+        "url": "https://www.youtube.com/watch?v=xxxxxxxxxx",
         "learning_video_task": "Learn the basics of CSS and its syntax."
       }
     ],
@@ -138,54 +156,25 @@ Example Response (JSON Format):
     "learning_task": "Learn to style HTML using CSS."
   }
 ]
-
-Key Enhancements:
-- Clearer task segmentation, making it easier for the model to follow the instructions.
-- Enhanced structure of the JSON response, ensuring each element is clearly defined.
-- Focused goal on dividing content per day while staying close to the time target, with added learning task suggestions.
-
 """;
-      log("$totalVideos \n $totalTime   \n $numberDays \n $durationOfDay ");
-      // Generate content using the generative model
-      final content = [Content.text(prompt)];
-      final response = await model.generateContent(content);
-
-      // Extract and parse the JSON response
-      String text = response.text.toString();
-
-      // Validate and extract JSON part
-      String jsonPart = extractJsonPart(text);
-      if (jsonPart.isEmpty) {
-        log("Failed to extract JSON part from the response. Full response: $text");
-        return;
-      }
-
-      var decodedData = jsonDecode(jsonPart);
-
-      // Log the decoded data for debugging
-      log(decodedData.toString());
-      // log(prompt);
-    } catch (e) {
-      log("Error in aiResponse: $e");
-    }
   }
 
-  String extractJsonPart(String text) {
-    final jsonPattern1 = RegExp(r'json([\s\S]*?)');
-    final jsonPattern2 = RegExp(r'\{[\s\S]*\}');
-
-    // Try to match the first pattern
-    var match = jsonPattern1.firstMatch(text);
-    if (match != null && match.groupCount > 0) {
-      return match.group(1)!.trim();
+  String _extractJsonPart(String text) {
+    final jsonPattern = RegExp(r'(\{[\s\S]*?\})');
+    var match = jsonPattern.firstMatch(text);
+    if (match != null) {
+      String jsonString = match.group(0)!.trim();
+      try {
+        // Validate JSON to catch potential issues before returning
+        jsonDecode(jsonString);
+        return jsonString;
+      } catch (e) {
+        log("JSON decoding error: $e. JSON String: $jsonString");
+        return "";
+      }
+    } else {
+      log("No valid JSON found in the response.");
+      return "";
     }
-
-    // Fallback to the second pattern
-    match = jsonPattern2.firstMatch(text);
-    if (match != null && match.groupCount > 0) {
-      return match.group(0)!.trim();
-    }
-
-    return "";
   }
 }
