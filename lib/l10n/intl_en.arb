@@ -46,7 +46,7 @@
     "ResetPassword": "How can I reset my password?",
     "ChangeEmail": "How to change my email address?",
     "ContactSupport": "How to contact customer support?",
-    "DidntFindAnswer": "If you didn't find the answer you're looking for, feel free to contact us directly:",
+    "DidntFindAnswer": "If you didn't find the answer you're looking for, feel free to contact us",
     "ConnectWithUs": "Connect with us on social media:",
     "WhatsApp": "WhatsApp",
     "Messenger": "Messenger",
@@ -108,5 +108,7 @@
     "enter_time_in_minutes":"Please enter the time in minutes",
     "invalid_playlist_url": "Invalid playlist URL",
     "please_enter_a_valid_time": "Please enter a valid time",
-    "please_enter_time": "Please enter time"
+    "please_enter_time": "Please enter time",
+    "notitle": "No Title",
+    "task": "Task"
 }

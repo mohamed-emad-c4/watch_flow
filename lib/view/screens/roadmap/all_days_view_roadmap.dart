@@ -459,7 +459,7 @@ class VideoCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Duration: $duration",
+                      "${S.of(context).duration}: $duration",
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -469,7 +469,7 @@ class VideoCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Task: $learningTask",
+                      "${S.of(context).task}: $learningTask",
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -486,7 +486,7 @@ class VideoCard extends StatelessWidget {
                 children: [
                   IconButton(
                     tooltip: 'Show Task',
-                    icon: const Icon(Icons.task),
+                    icon: const Icon(Icons.text_snippet_outlined),
                     onPressed: () => _showTaskDialog(context, learningTask),
                   ),
                   IconButton(
@@ -499,11 +499,7 @@ class VideoCard extends StatelessWidget {
                     icon: const Icon(Icons.check_circle_outline),
                     onPressed: () => _markVideo(context),
                   ),
-                  IconButton(
-                    tooltip: 'Summarize Video',
-                    icon: const Icon(Icons.article_outlined),
-                    onPressed: () => _summarizeVideo(context),
-                  ),
+                  
                 ],
               )
             ],

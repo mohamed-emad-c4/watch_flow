@@ -177,7 +177,7 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.grey[800],
       ),
       child: Text(
         S.of(context).insert,

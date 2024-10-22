@@ -8,6 +8,11 @@ import 'package:watch_flow/model/playList.dart';
 
 class HelperFunction {
   final Dio _dio = Dio();
+  //calculating number of days .
+  int calculateNumberOfDays(int duration) {
+    int numberOfDays = duration ~/ 86400;
+    return numberOfDays;
+  }
 
   // Fetch all videos from a playlist and their details
   Future<List<VideoInfoModel>> getAllVideosInPlaylist(String playlistId) async {

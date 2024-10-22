@@ -1149,6 +1149,26 @@ class S {
       args: [],
     );
   }
+
+  /// `No Title`
+  String get notitle {
+    return Intl.message(
+      'No Title',
+      name: 'notitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Task`
+  String get task {
+    return Intl.message(
+      'Task',
+      name: 'task',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:watch_flow/logic/shared_preferences.dart';
+import 'package:watch_flow/view/screens/intail/widgets/build_tablet.dart';
 import 'package:watch_flow/view/setting_views/faq.dart';
 import '../generated/l10n.dart';
 import 'setting_views/about_us.dart';
@@ -10,9 +11,7 @@ import 'setting_views/help_and_support.dart';
 import 'setting_views/privacy_and_security.dart';
 
 class Setting extends StatelessWidget {
-  final bool isDarkMode;
-
-  const Setting({super.key, required this.isDarkMode});
+  const Setting({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +20,13 @@ class Setting extends StatelessWidget {
         title: Text(S.of(context).settings),
         centerTitle: true,
       ),
-      body: SettingsListState(isDarkMode: isDarkMode),
+      body: SettingsListState(),
     );
   }
 }
 
 class SettingsListState extends StatefulWidget {
-  final bool isDarkMode;
-
-  const SettingsListState({super.key, required this.isDarkMode});
+  const SettingsListState({super.key});
 
   @override
   _SettingsListStateState createState() => _SettingsListStateState();
@@ -38,8 +35,8 @@ class SettingsListState extends StatefulWidget {
 class _SettingsListStateState extends State<SettingsListState> {
   String selectedLanguage = 'en';
   bool isDarkMode = false;
-  
-  final SharePrefrenceClass sharePrefrenceClass = SharePrefrenceClass(); 
+
+  final SharePrefrenceClass sharePrefrenceClass = SharePrefrenceClass();
 
   @override
   void initState() {
@@ -48,9 +45,11 @@ class _SettingsListStateState extends State<SettingsListState> {
   }
 
   Future<void> _loadSavedPreferences() async {
-    final savedLanguage = await sharePrefrenceClass.getVlue(key: 'language', defaultValue: 'en');
-    final savedTheme = await sharePrefrenceClass.getVlue(key: 'themeMode', defaultValue: false);
-    
+    final savedLanguage =
+        await sharePrefrenceClass.getVlue(key: 'language', defaultValue: 'en');
+    final savedTheme = await sharePrefrenceClass.getVlue(
+        key: 'themeMode', defaultValue: false);
+
     setState(() {
       selectedLanguage = savedLanguage;
       isDarkMode = savedTheme;
@@ -71,13 +70,21 @@ class _SettingsListStateState extends State<SettingsListState> {
         const Divider(),
         _buildThemeTile(context), // وضع التبديل للوضع الليلي
         const Divider(),
-        _buildPrivacyTile(context),
+        build_tablet(
+            title: S.of(context).PrivacyAndSecurity,
+            onTap: () => Get.to(const PrivacyAndSecurityPage()), icon: Icons.security,),
+
         const Divider(),
-        _buildHelpTile(context),
+        build_tablet(
+            title: S.of(context).HelpSupport,
+            onTap: () => Get.to(const HelpAndSupportPage()), icon: Icons.help,),
         const Divider(),
-        _buildAboutTile(context),
+        build_tablet(
+            title: S.of(context).AboutUs,
+            onTap: () => Get.to(const AboutUsPage()), icon: Icons.info,),
         const Divider(),
-        _buildFAQTile(context),
+        build_tablet(
+            title: S.of(context).FAQ, onTap: () => Get.to(const FAQSection()), icon: Icons.question_answer,),
       ],
     );
   }
@@ -111,11 +118,12 @@ class _SettingsListStateState extends State<SettingsListState> {
       leading: const Icon(Icons.brightness_6),
       title: Text(S.of(context).darkMode),
       trailing: Switch(
+        activeColor: Colors.blue[800],
         value: isDarkMode,
         onChanged: (bool value) {
           setState(() {
             isDarkMode = value;
-            _savePreferences(selectedLanguage, value); 
+            _savePreferences(selectedLanguage, value);
           });
         },
       ),
@@ -133,91 +141,3 @@ class _SettingsListStateState extends State<SettingsListState> {
     }
   }
 }
-
-// بلاطة الخصوصية والأمان
-ListTile _buildPrivacyTile(BuildContext context) {
-  return ListTile(
-    leading: const Icon(Icons.lock),
-    title: Text(S.of(context).PrivacyAndSecurity),
-    onTap: () {
-      Get.to(const PrivacyAndSecurityPage());
-    },
-  );
-}
-
-// بلاطة المساعدة والدعم
-ListTile _buildHelpTile(BuildContext context) {
-  return ListTile(
-    leading: const Icon(Icons.help),
-    title: Text(S.of(context).HelpSupport),
-    onTap: () {
-      Get.to(const HelpAndSupportPage());
-    },
-  );
-}
-
-// بلاطة "من نحن"
-ListTile _buildAboutTile(BuildContext context) {
-  return ListTile(
-    leading: const Icon(Icons.info),
-    title: Text(S.of(context).AboutUs),
-    onTap: () {
-      Get.to(const AboutUsPage());
-    },
-  );
-}
-ListTile _buildFAQTile(BuildContext context) {
-  return ListTile(
-    leading: const Icon(Icons.book),
-    title: Text(S.of(context).FAQ),
-    onTap: () {
-      Get.to( const FAQSection());
-    },
-  );
-}
-
-Widget _buildSocialMediaButton(BuildContext context,
-    {required FaIcon icon,
-    required String label,
-    required VoidCallback onTap}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Column(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Theme.of(context).primaryColor,
-          child: icon,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ],
-    ),
-  );
-}
-
-void _launchURL(String url) async {
-  final Uri uri = Uri.parse(url);
-  if (await canLaunch(uri.toString())) {
-    await launch(uri.toString());
-  } else {
-    Get.snackbar("Error", "Could not launch");
-  }
-}
-
-void _sendEmail() async {
-  final Uri emailUri = Uri(
-    scheme: 'mailto',
-    path: 'zemax.c4@gmail.com',
-    query: 'subject=Help%20Needed&body=Hi%20there,%0D%0A%0D%0A',
-  );
-  if (await canLaunch(emailUri.toString())) {
-    await launch(emailUri.toString());
-  } else {
-    Get.snackbar("Error", "Could not launch");
-  }
-}
-
