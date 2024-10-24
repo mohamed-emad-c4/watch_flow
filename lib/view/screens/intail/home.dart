@@ -58,8 +58,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             icon: const Icon(Icons.settings),
             onPressed: () {
               // Toggle dark mode
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Setting()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Setting()));
             },
           ),
         ],
@@ -124,7 +124,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const AllDaysRoadmap(),
+                                  builder: (context) => MyApp1 ( playlistId:playlist['playlist_id'] ,),
+                                  // builder: (context) =>  AllDaysRoadmap( playlistId:playlist['playlist_id'] ,),
                                 ),
                               );
                             },

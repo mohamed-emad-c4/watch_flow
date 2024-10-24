@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:watch_flow/data/databases.dart';
@@ -207,27 +208,44 @@ class HelperFunction {
 
     return [];
   }
-  Future< List<Map<String, dynamic>> > getALLVideosINPlaylistIfoFromDB(String playlistId) async {
+
+  Future<List<Map<String, dynamic>>> getALLVideosINPlaylistIfoFromDB(
+      String playlistId) async {
     List<Map<String, dynamic>> allInfoPlaylist =
         await DatabaseHelper().getVideosByPlaylistId(playlistId);
     // log("allInfoPlaylist :: ${allInfoPlaylist.length.toString()}");
     return allInfoPlaylist;
   }
-int timeToMinutes(String time) {
-  // Split the time string into hours, minutes, and seconds
-  List<String> parts = time.split(':');
-  
-  // Parse hours, minutes, and seconds
-  int hours = int.parse(parts[0]);
-  int minutes = int.parse(parts[1]);
-  int seconds = int.parse(parts[2]);
-  
-  // Convert hours to minutes
-  int totalMinutes = hours * 60 + minutes;
-  
-  // Convert seconds to minutes and add them
-  totalMinutes += seconds ~/ 60;
-  
-  return totalMinutes;
-}
+
+  int timeToMinutes(String time) {
+    // Split the time string into hours, minutes, and seconds
+    List<String> parts = time.split(':');
+
+    // Parse hours, minutes, and seconds
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1]);
+    int seconds = int.parse(parts[2]);
+
+    // Convert hours to minutes
+    int totalMinutes = hours * 60 + minutes;
+
+    // Convert seconds to minutes and add them
+    totalMinutes += seconds ~/ 60;
+
+    return totalMinutes;
+  }
+
+  Future<String> extractJsonFromText(String text) async {
+    // البحث عن بداية ونهاية الجزء اللي بيحتوي على الـ JSON
+    int startIndex = text.indexOf('```json');
+    int endIndex = text.lastIndexOf('```');
+    // التأكد إن تم العثور على الجزء الصحيح
+    if (startIndex == -1 || endIndex == -1 || startIndex >= endIndex) {
+      throw Exception('Failed to extract JSON');
+    }
+    // استخراج الـ JSON من النص
+    String jsonPart = text.substring(startIndex + 7, endIndex).trim();
+    // إعادة النص مباشرة كـ String
+    return jsonPart;
+  }
 }

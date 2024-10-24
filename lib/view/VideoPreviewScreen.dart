@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:watch_flow/generated/l10n.dart';
 import '../data/databases.dart';
 
 class VideoPreviewScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class VideoPreviewScreen extends StatefulWidget {
 class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
   List<Map<String, dynamic>> playlistAllVideos = [];
   bool _isLoading = true;
-  bool _isPlaylistInfoLoaded = false; // للتحقق من تحميل بيانات القائمة
+  bool _isPlaylistInfoLoaded = false;
 
   @override
   void initState() {
@@ -34,12 +34,12 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
   }
 
   Future<void> _fetchVideos() async {
-    // Fetch videos from the database using playlistId
     playlistAllVideos =
         await DatabaseHelper().getVideosByPlaylistId(widget.playlistId);
+    log("playlistAllVideos: ${playlistAllVideos}");
     setState(() {
       _isLoading = false;
-    }); // Update the state to display the data
+    });
   }
 
   @override
@@ -49,81 +49,99 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
         title: Text(
           _isPlaylistInfoLoaded
               ? '${widget.allInfoPlaylist.isNotEmpty ? widget.allInfoPlaylist[0]['playlist_real_name'] : 'Playlist'}'
-              : S.of(context).loading,
+              : 'Loading...',
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ), // تحقق مما إذا كانت بيانات القائمة قد تم تحميلها
+        ),
       ),
-      body: _isLoading ||
-              !_isPlaylistInfoLoaded // تحقق من تحميل بيانات الفيديو و القائمة
+      body: _isLoading || !_isPlaylistInfoLoaded
           ? const Center(child: CircularProgressIndicator())
           : playlistAllVideos.isEmpty
-              ? Center(child: Text(S.of(context).no_videos_found))
-              : Column(
-                  children: [
-                    const SizedBox(height: 16.0),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: playlistAllVideos.length,
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        itemBuilder: (context, index) {
-                          final video = playlistAllVideos[index];
-                          return Card(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 8.0),
-                            elevation: 4.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+              ? const Center(child: Text('No videos found'))
+              : ListView.builder(
+                  itemCount: playlistAllVideos.length,
+                  itemBuilder: (context, index) {
+                    final video = playlistAllVideos[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      elevation: 4.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12.0),
+                              topRight: Radius.circular(12.0),
                             ),
-                            child: InkWell(
-                              onTap: () async {
-                                // Open the video URL in the browser
-                                final url = video['video_url'];
-                                if (await canLaunch(url)) {
-                                  await launch(url);
-                                } else {
-                                  throw '${S.of(context).could_not_launch} $url';
-                                }
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: const BorderRadius.vertical(
-                                        top: Radius.circular(12.0)),
-                                    child: Image.network(
-                                      video['video_image'],
-                                      fit: BoxFit.cover,
-                                      height: 150,
-                                      width: double.infinity,
-                                    ),
+                            child: Image.network(
+                              video['video_image'],
+                              height: 180,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  video['video_tittle'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Text(
-                                      video['video_tittle'],
-                                      style: const TextStyle(
-                                        fontSize: 16,
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  'Duration: ${video['video_duration']}  ${video['video_days']}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        final url = video['video_url'];
+                                        if (await canLaunch(url)) {
+                                          await launch(url);
+                                        } else {
+                                          throw 'Could not launch $url';
+                                        }
+                                      },
+                                      child: const Text(
+                                        'Watch Video',
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                    Text(
+                                      video['video_status'] == 1
+                                          ? 'Completed'
+                                          : 'Pending',
+                                      style: TextStyle(
+                                        color: video['video_status'] == 1
+                                            ? Colors.green
+                                            : Colors.red,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    " ${video['video_duration']}",
-                                    style:  TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[600],
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                ],
-                              ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
     );
   }

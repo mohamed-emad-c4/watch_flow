@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:watch_flow/generated/l10n.dart';
 
 class build_tablet extends StatelessWidget {
-  build_tablet({
+  const build_tablet({
     super.key,
     required this.title,
     this.onTap,

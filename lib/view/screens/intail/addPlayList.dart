@@ -29,7 +29,6 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
     return null;
   }
 
-  String time = "60 ";
   String? _validateTime(String? value) {
     if (value == null || value.isEmpty) {
       return S.of(context).please_enter_time;
@@ -51,7 +50,7 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
     try {
       String url = _urlController.text.trim();
       String notes = _notesController.text.trim();
-      time = _timeController.text.trim();
+      String time = _timeController.text.trim();
 
       String playlistId = _extractPlaylistId(url);
 
@@ -61,6 +60,8 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
       }
 
       await HelperFunction().getAllVideosInPlaylist(playlistId);
+      await GiminiAi().aiResponse(
+          int.parse(time) + (int.parse(time) * 0.25).toInt(), playlistId);
 
       BlocProvider.of<UpdateHomeCubit>(context).updateHome();
       Navigator.pop(context, true);
@@ -109,12 +110,6 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await GiminiAi().aiResponse(90, "PL4n1Qos4Tb6SWPbJNpiznp-Ok4A8J_23l");
-        },
-        child: const Icon(Icons.close),
       ),
     );
   }
@@ -170,7 +165,7 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
 
   Widget _buildSubmitButton() {
     return ElevatedButton(
-      onPressed: _insertPlaylist,
+      onPressed: _isLoading ? null : _insertPlaylist,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         shape: RoundedRectangleBorder(
