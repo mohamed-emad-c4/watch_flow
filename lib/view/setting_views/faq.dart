@@ -18,7 +18,7 @@ class FAQSection extends StatelessWidget {
       body: ListView(
         children: [
           FAQExpantionTileextends(
-            title: '${S.of(context).q1}',
+            title: S.of(context).q1,
             body: ' ${S.of(context).a_q1}\n\n'
                 '\t${S.of(context).a1_q1}\n\n'
                 '\t${S.of(context).a2_q1}\n\n'
@@ -42,7 +42,7 @@ class FAQSection extends StatelessWidget {
             title: S.of(context).q6,
             body: S.of(context).a1_q6,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
@@ -52,7 +52,7 @@ class FAQSection extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
@@ -64,11 +64,11 @@ class FAQSection extends StatelessWidget {
                   backgroundColor: Colors.grey[800],
                 ),
                 onPressed: () {
-                  Get.off(() => HelpAndSupportPage());
+                  Get.off(() => const HelpAndSupportPage());
                 },
                 child: Text(
                   S.of(context).ContactUs,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 )),
           )
         ],

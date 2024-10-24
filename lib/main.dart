@@ -6,7 +6,6 @@ import 'package:watch_flow/logic/cubit/update_home_cubit.dart';
 import 'package:watch_flow/logic/globalVaribul.dart';
 import 'package:watch_flow/logic/shared_preferences.dart';
 import 'package:watch_flow/view/screens/intail/home.dart';
-import 'package:watch_flow/view/screens/intail/intail.dart';
 import 'generated/l10n.dart';
 
 void main() async {
@@ -52,7 +51,7 @@ class matrial extends StatelessWidget {
       locale: const Locale('en'),
       title: 'YT to Todo',
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xffe5e5e5)),
+        appBarTheme: const AppBarTheme(color: Color.fromARGB(255, 154, 86, 86)),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,

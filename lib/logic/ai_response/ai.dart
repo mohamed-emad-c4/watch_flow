@@ -7,6 +7,7 @@ import '../../data/databases.dart';
 import '../helper.dart';
 
 const String giminiAiApiKey = "AIzaSyCLPtP-PRbk5R11EUZbpYdM1USwPRyHj5o";
+Map<String, dynamic> handledByAi = {};
 
 class GiminiAi {
   List<Map<String, dynamic>> playlistInfo = [];
@@ -49,7 +50,8 @@ class GiminiAi {
       // Extract total time and total videos from the playlist info
       String totalTime = playlistInfo[0]['playlist_total_time'];
       String totalVideos = playlistInfo[0]["playlist_total_videos"];
-      numberDays = HelperFunction().timeToMinutes(totalTime) ~/ durationOfDay;
+      numberDays =
+          (HelperFunction().timeToMinutes(totalTime) ~/ durationOfDay) + 1;
       log("numberDays :: $numberDays :: $durationOfDay ::  HelperFunction().timeToMinutes(totalTime) :: ${HelperFunction().timeToMinutes(totalTime)}");
       // Construct the prompt for the generative AI
       String prompt = """
@@ -144,7 +146,7 @@ remember aproximately in $numberDays days and the total duration is approximatel
 - Analyze the total duration of the playlist and create a structured learning plan.
 - Ensure that if any video exceeds $durationOfDay minutes, it should be split across days.
 """;
-      log(prompt);
+      //  log(prompt);
       // log("$totalVideos \n $totalTime   \n $numberDays \n $durationOfDay ");
       // Generate content using the generative model
       final content = [Content.text(prompt)];
@@ -153,39 +155,27 @@ remember aproximately in $numberDays days and the total duration is approximatel
       // Extract and parse the JSON response
       String text = response.text.toString();
 
-      // Validate and extract JSON part
-      String jsonPart = extractJsonPart(text);
-      if (jsonPart.isEmpty) {
-        log("Failed to extract JSON part from the response. Full response: $text");
-        return;
+      try {
+        String extractedJson = await HelperFunction().extractJsonFromText(text);
+        List<dynamic> jsonData = jsonDecode(extractedJson);
+        int i = 0;
+        for (var item in jsonData) {
+          // log("day: ${item['day']}");
+          // log("total_duration: ${item['total_duration']}");
+          for (var element in item['videos']) {
+            int result = await DatabaseHelper()
+                .updateVideoDaysByUrl(element["url"], item['day']);
+            //   log(' $i Updated rows count: ${element["url"]} ${ item['day'] }${element["title"]}');
+            log(' $i Updated rows count: $result');
+            i++;
+          }
+        }
+      } catch (e) {
+        log("Error in aiResponse: $e");
+        print(e); // في حالة وجود خطأ
       }
-
-      var decodedData = jsonDecode(jsonPart);
-
-      // Log the decoded data for debugging
-      log(decodedData.toString());
-      // log(prompt);
     } catch (e) {
       log("Error in aiResponse: $e");
     }
-  }
-
-  String extractJsonPart(String text) {
-    final jsonPattern1 = RegExp(r'json([\s\S]*?)');
-    final jsonPattern2 = RegExp(r'\{[\s\S]*\}');
-
-    // Try to match the first pattern
-    var match = jsonPattern1.firstMatch(text);
-    if (match != null && match.groupCount > 0) {
-      return match.group(1)!.trim();
-    }
-
-    // Fallback to the second pattern
-    match = jsonPattern2.firstMatch(text);
-    if (match != null && match.groupCount > 0) {
-      return match.group(0)!.trim();
-    }
-
-    return "";
   }
 }

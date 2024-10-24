@@ -20,7 +20,7 @@ class Setting extends StatelessWidget {
         title: Text(S.of(context).settings),
         centerTitle: true,
       ),
-      body: SettingsListState(),
+      body: const SettingsListState(),
     );
   }
 }

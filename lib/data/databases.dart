@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../view/screens/roadmap/all_days_view_roadmap.dart';
+
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   factory DatabaseHelper() => _instance;
@@ -54,6 +56,7 @@ class DatabaseHelper {
         FOREIGN KEY (video_playlist_id) REFERENCES playlist_info (playlist_id)
       )
     ''');
+    
   }
 
   // CRUD operations for playlist_info
@@ -107,13 +110,19 @@ class DatabaseHelper {
     return await db.query('videos_info',
         where: 'video_playlist_id = ?', whereArgs: [playlistId]);
   }
-
+ Future<List<Video>> getVideosByPlaylistIdAI(
+      String playlistId) async {
+     Database db = await database;
+    List<Map<String, dynamic>> videoMaps = await db.query('videos_info',
+        where: 'video_playlist_id = ?', whereArgs: [playlistId]);
+    return videoMaps.map((videoMap) => Video.fromJson(videoMap)).toList();
+  }
   Future<int> updateVideo(Map<String, dynamic> video) async {
     Database db = await database;
     return await db.update(
       'videos_info',
       video,
-      where: 'id = ?',
+      where: 'video_url = ?',
       whereArgs: [video['id']],
     );
   }
@@ -122,4 +131,13 @@ class DatabaseHelper {
     Database db = await database;
     return await db.delete('videos_info', where: 'id = ?', whereArgs: [id]);
   }
+Future<int> updateVideoDaysByUrl(String videoUrl, int newDays) async {
+  Database db = await database;
+  return await db.update(
+    'videos_info',
+    {'video_days': newDays}, // تحديث فقط video_days
+    where: 'video_url = ?', // استخدام URL الفيديو كمعيار للتحديث
+    whereArgs: [videoUrl], // تمرير URL الفيديو
+  );
+}
 }
