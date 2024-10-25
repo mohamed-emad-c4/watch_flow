@@ -51,6 +51,7 @@ class PlaylistPreview {
   final int playlistStartAt;
   final int playlistEndAt;
   final int playlistStatus;
+  final String playlistlearning_task;
 
   PlaylistPreview({
     required this.id,
@@ -64,6 +65,7 @@ class PlaylistPreview {
     required this.playlistStartAt,
     required this.playlistEndAt,
     required this.playlistStatus,
+    required this.playlistlearning_task,
   });
 
   static PlaylistPreview fromMap(Map<String, dynamic> map) {
@@ -79,7 +81,30 @@ class PlaylistPreview {
       playlistStartAt: map['playlist_start_at'],
       playlistEndAt: map['playlist_end_at'],
       playlistStatus: map['playlist_status'],
+      playlistlearning_task: map['learning_task'],
     );
   }
 }
 /* --- End lib\model\playList.dart --- */
+class Video {
+  final String videoId;
+  final String videoTitle;
+  final String videoImage;
+  final String videoUrl;
+  final String videoDuration;
+  final int videoDays;
+  final String learningTask;
+  bool isDone; // إضافة خاصية isDone
+
+  Video({
+    required this.videoId,
+    required this.videoTitle,
+    required this.videoImage,
+    required this.videoUrl,
+    required this.videoDuration,
+    required this.videoDays,
+    required this.learningTask,
+    this.isDone = false,  // افتراضيًا غير منتهية
+  });
+}
+

@@ -145,7 +145,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   );
                 },
                 child: Hero(
-                  tag: 'playlistHero-${playlist['playlist_id']}',
+                  tag: 'playlistHero-${playlist['playlist_id']}1',
                   child: Card(
                     margin: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),

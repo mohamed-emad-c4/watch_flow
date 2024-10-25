@@ -154,19 +154,23 @@ remember aproximately in $numberDays days and the total duration is approximatel
 
       // Extract and parse the JSON response
       String text = response.text.toString();
-
+      //log("text: $text");
       try {
         String extractedJson = await HelperFunction().extractJsonFromText(text);
+        log("extractedJson: $extractedJson");
         List<dynamic> jsonData = jsonDecode(extractedJson);
         int i = 0;
         for (var item in jsonData) {
           // log("day: ${item['day']}");
           // log("total_duration: ${item['total_duration']}");
           for (var element in item['videos']) {
-            int result = await DatabaseHelper()
-                .updateVideoDaysByUrl(element["url"], item['day']);
-            //   log(' $i Updated rows count: ${element["url"]} ${ item['day'] }${element["title"]}');
-            log(' $i Updated rows count: $result');
+            int result = await DatabaseHelper().updateVideoDaysByUrl(
+                element["url"],
+                item['day'],
+                element["learning_video_task"] ?? "not set");
+
+           // log(' $i Updated rows count: ${element["url"]} ${item['day']}${element["title"]} , ${element["learning_video_task"]}');
+            //log(' $i Updated rows count: $result');
             i++;
           }
         }

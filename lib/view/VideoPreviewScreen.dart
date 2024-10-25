@@ -36,7 +36,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
   Future<void> _fetchVideos() async {
     playlistAllVideos =
         await DatabaseHelper().getVideosByPlaylistId(widget.playlistId);
-    log("playlistAllVideos: ${playlistAllVideos}");
+    log("playlistAllVideos: $playlistAllVideos");
     setState(() {
       _isLoading = false;
     });
@@ -97,7 +97,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                                 ),
                                 const SizedBox(height: 8.0),
                                 Text(
-                                  'Duration: ${video['video_duration']}  ${video['video_days']}',
+                                  'Duration: ${video['video_duration']}}',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
