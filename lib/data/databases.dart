@@ -47,7 +47,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE videos_info(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        video_tittle TEXT NOT NULL,
+         TEXT NOT NULL,
         video_url TEXT,
         video_image TEXT,
         video_duration TEXT,
@@ -127,7 +127,7 @@ class DatabaseHelper {
       return Video(
         videoId:
             maps[i]['video_id'] ?? '', // إذا كان null، استبدله بسلسلة فارغة
-        videoTitle: maps[i]['video_title'] ?? '',
+        videoTitle: maps[i]['video_tittle'] ?? '',
         videoImage: maps[i]['video_image'] ?? '',
         videoUrl: maps[i]['video_url'] ?? '',
         videoDuration: maps[i]['video_duration'] ?? '',
