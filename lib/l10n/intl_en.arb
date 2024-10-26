@@ -105,10 +105,13 @@
     "change_this": "Changes to This Privacy Policy",
     "we_may_update": "We may update our privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page. You are advised to review this privacy policy periodically for any changes.",
     "time": "Time",
-    "enter_time_in_minutes":"Please enter the time in minutes",
+    "enter_time_in_minutes": "Please enter the time in minutes",
     "invalid_playlist_url": "Invalid playlist URL",
     "please_enter_a_valid_time": "Please enter a valid time",
     "please_enter_time": "Please enter time",
     "notitle": "No Title",
-    "task": "Task"
+    "task": "Task",
+    "playlist_deleted_successfully": "Playlist deleted successfully",
+    "cancel": "Cancel",
+    "delete_Playlist": "Delete Playlist"
 }

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:watch_flow/logic/shared_preferences.dart';
 import 'package:watch_flow/view/screens/intail/widgets/build_tablet.dart';
 import 'package:watch_flow/view/setting_views/faq.dart';
-import '../generated/l10n.dart';
-import '../logic/cubit/updata_app_cubit.dart';
-import 'setting_views/about_us.dart';
-import 'setting_views/help_and_support.dart';
-import 'setting_views/privacy_and_security.dart';
+import '../../generated/l10n.dart';
+import '../../view/setting_views/about_us.dart';
+import '../../view/setting_views/help_and_support.dart';
+import '../../view/setting_views/privacy_and_security.dart';
+
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
@@ -20,8 +18,6 @@ class Setting extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.of(context).settings),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: const SettingsListState(),
     );
@@ -71,43 +67,23 @@ class _SettingsListStateState extends State<SettingsListState> {
       children: [
         _buildLanguageTile(context),
         const Divider(),
-        _buildThemeTile(context),
+        _buildThemeTile(context), // وضع التبديل للوضع الليلي
         const Divider(),
         build_tablet(
-          title: S.of(context).PrivacyAndSecurity,
-          onTap: () => Get.to(const PrivacyAndSecurityPage()),
-          icon: Icons.security,
-        ),
+            title: S.of(context).PrivacyAndSecurity,
+            onTap: () => Get.to(const PrivacyAndSecurityPage()), icon: Icons.security,),
+
         const Divider(),
         build_tablet(
-          title: S.of(context).HelpSupport,
-          onTap: () => Get.to(const HelpAndSupportPage()),
-          icon: Icons.help,
-        ),
+            title: S.of(context).HelpSupport,
+            onTap: () => Get.to(const HelpAndSupportPage()), icon: Icons.help,),
         const Divider(),
         build_tablet(
-          title: S.of(context).AboutUs,
-          onTap: () => Get.to(const AboutUsPage()),
-          icon: Icons.info,
-        ),
+            title: S.of(context).AboutUs,
+            onTap: () => Get.to(const AboutUsPage()), icon: Icons.info,),
         const Divider(),
         build_tablet(
-          title: S.of(context).FAQ,
-          onTap: () => Get.to(const FAQSection()),
-          icon: Icons.question_answer,
-        ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: ElevatedButton(
-            child: const Text("Save"),
-            onPressed: () {
-              _savePreferences(selectedLanguage, isDarkMode);
-              BlocProvider.of<UpdataAppCubit>(context).updataApp();
-              Get.back();
-            },
-          ),
-        ),
+            title: S.of(context).FAQ, onTap: () => Get.to(const FAQSection()), icon: Icons.question_answer,),
       ],
     );
   }
@@ -116,13 +92,13 @@ class _SettingsListStateState extends State<SettingsListState> {
   ListTile _buildLanguageTile(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.language),
-      title: Text(S.of(context).language),
+      title: Text(S.of(context).settings),
       trailing: DropdownButton<String>(
         value: selectedLanguage,
         onChanged: (String? newValue) {
           setState(() {
             selectedLanguage = newValue!;
-            _savePreferences(newValue, isDarkMode);
+            _savePreferences(newValue, isDarkMode); // حفظ اللغة والوضع
           });
         },
         items: ['en', 'ar'].map<DropdownMenuItem<String>>((String value) {
@@ -148,7 +124,6 @@ class _SettingsListStateState extends State<SettingsListState> {
             isDarkMode = value;
             _savePreferences(selectedLanguage, value);
           });
-          BlocProvider.of<UpdataAppCubit>(context).updataApp();
         },
       ),
     );

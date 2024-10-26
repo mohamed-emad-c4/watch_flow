@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watch_flow/logic/ai_response/ai.dart';
 import 'package:watch_flow/logic/helper.dart';
 import 'package:watch_flow/generated/l10n.dart';
+import '../../../data/databases.dart';
 import '../../../logic/cubit/update_home_cubit.dart';
 
 class PlaylistInputScreen extends StatefulWidget {
@@ -59,14 +60,22 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
         return;
       }
 
+      bool playlistExists = await DatabaseHelper().isPlaylistExists(playlistId);
+      if (playlistExists) {
+        _showSnackbar("playlist already exists");
+        return;
+      }
+
       await HelperFunction().getAllVideosInPlaylist(playlistId);
       await GiminiAi().aiResponse(
           int.parse(time) + (int.parse(time) * 0.25).toInt(), playlistId);
 
       BlocProvider.of<UpdateHomeCubit>(context).updateHome();
       Navigator.pop(context, true);
-    } catch (e) {
+    } catch (e, stackTrace) {
       _showSnackbar('${S.of(context).error}: $e');
+      print('Error: $e');
+      print('Stack Trace: $stackTrace');
     } finally {
       setState(() {
         _isLoading = false;
@@ -86,6 +95,31 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
     );
   }
 
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String labelText,
+    required String hintText,
+    String? Function(String?)? validator,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        filled: true,
+        fillColor: Colors.grey[200],
+      ),
+      keyboardType: keyboardType,
+      validator: validator,
+      maxLines: maxLines,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,86 +130,51 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _buildUrlInputField(),
-              const SizedBox(height: 20),
-              _buildTimeInputField(),
-              const SizedBox(height: 20),
-              _buildNotesInputField(),
-              const SizedBox(height: 20),
-              _buildSubmitButton(),
-              if (_isLoading) const Center(child: CircularProgressIndicator()),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _buildInputField(
+                  controller: _urlController,
+                  labelText: S.of(context).playlist_url,
+                  hintText: S.of(context).enter_the_URL_of_the_playlist,
+                  validator: _validateUrl,
+                ),
+                const SizedBox(height: 20),
+                _buildInputField(
+                  controller: _timeController,
+                  labelText: S.of(context).time,
+                  hintText: S.of(context).enter_time_in_minutes,
+                  validator: _validateTime,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 20),
+                _buildInputField(
+                  controller: _notesController,
+                  labelText: S.of(context).notes,
+                  hintText: S.of(context).enter_any_notes_about_the_playlist,
+                  maxLines: 3,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _insertPlaylist,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    backgroundColor: Colors.grey[800],
+                  ),
+                  child: Text(
+                    S.of(context).insert,
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                if (_isLoading) const Center(child: CircularProgressIndicator()),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildUrlInputField() {
-    return TextFormField(
-      controller: _urlController,
-      decoration: InputDecoration(
-        labelText: S.of(context).playlist_url,
-        hintText: S.of(context).enter_the_URL_of_the_playlist,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        filled: true,
-        fillColor: Colors.grey[200],
-      ),
-      validator: _validateUrl,
-    );
-  }
-
-  Widget _buildTimeInputField() {
-    return TextFormField(
-      controller: _timeController,
-      decoration: InputDecoration(
-        labelText: S.of(context).time,
-        hintText: S.of(context).enter_time_in_minutes,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        filled: true,
-        fillColor: Colors.grey[200],
-      ),
-      keyboardType: TextInputType.number,
-      validator: _validateTime,
-    );
-  }
-
-  Widget _buildNotesInputField() {
-    return TextFormField(
-      controller: _notesController,
-      decoration: InputDecoration(
-        labelText: S.of(context).notes,
-        hintText: S.of(context).enter_any_notes_about_the_playlist,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        filled: true,
-        fillColor: Colors.grey[200],
-      ),
-      maxLines: 3,
-    );
-  }
-
-  Widget _buildSubmitButton() {
-    return ElevatedButton(
-      onPressed: _isLoading ? null : _insertPlaylist,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        backgroundColor: Colors.grey[800],
-      ),
-      child: Text(
-        S.of(context).insert,
-        style: const TextStyle(fontSize: 18, color: Colors.white),
       ),
     );
   }

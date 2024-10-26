@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:watch_flow/generated/l10n.dart';
 
 import '../model/playList.dart';
 import '../view/screens/roadmap/all_days_view_roadmap.dart';
@@ -88,9 +89,10 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> deletePlaylist(int id) async {
+  Future<int> deletePlaylist(String id) async {
     Database db = await database;
-    return await db.delete('playlist_info', where: 'id = ?', whereArgs: [id]);
+    return await db
+        .delete('playlist_info', where: 'playlist_id = ?', whereArgs: [id]);
   }
 
   // CRUD operations for videos_info
@@ -182,5 +184,15 @@ class DatabaseHelper {
       where: 'video_url = ?',
       whereArgs: [videoUrl],
     );
+  }
+
+  Future<bool> isPlaylistExists(String playlistId) async {
+    Database db = await database;
+    List<Map<String, dynamic>> result = await db.query(
+      'playlist_info',
+      where: 'playlist_id = ?',
+      whereArgs: [playlistId],
+    );
+    return result.isNotEmpty;
   }
 }

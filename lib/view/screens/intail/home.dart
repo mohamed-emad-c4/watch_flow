@@ -24,7 +24,7 @@ class Home extends StatelessWidget {
         } else if (state is UpdateHomeError) {
           return Center(child: Text('${S.of(context).error}: '));
         } else {
-          return Center(child: Text('${S.of(context).something_went_wrong} '));
+          return Center(child: Text(S.of(context).something_went_wrong));
         }
       },
     );
@@ -50,194 +50,222 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).all_Playlists),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Toggle dark mode
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Setting()));
-            },
-          ),
-        ],
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(),
+      appBar: _buildAppBar(context),
+      body: _buildBody(),
+      floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(S.of(context).all_Playlists),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const Setting()));
+          },
         ),
-      ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: playlists,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-                child: Text('${S.of(context).error}: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text(S.of(context).no_playlists_found));
-          }
+      ],
+    );
+  }
 
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            itemBuilder: (context, index) {
-              final playlist = snapshot.data![index];
+  Widget _buildBody() {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: playlists,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('${S.of(context).error}: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text(S.of(context).no_playlists_found));
+        }
 
-              return GestureDetector(
-                onTap: () {
-                  Get.bottomSheet(
-                    Container(
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(height: 20),
-                          ListTile(
-                            leading: const Icon(Icons.playlist_play),
-                            title: Text(S.of(context).view_Playlist),
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VideoPreviewScreen(
-                                    playlistId: playlist['playlist_id'],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.directions_run),
-                            title: Text(S.of(context).view_Playlist_Roadmap),
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MyApp1 ( playlistId:playlist['playlist_id'] ,),
-                                  // builder: (context) =>  AllDaysRoadmap( playlistId:playlist['playlist_id'] ,),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-                      ),
-                    ),
-                    enableDrag: true,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      ),
-                    ),
-                  );
-                },
-                child: Hero(
-                  tag: 'playlistHero-${playlist['playlist_id']}1',
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    elevation: 8.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12.0)),
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                playlist['playlist_image'] ??
-                                    'https://via.placeholder.com/150',
-                                fit: BoxFit.cover,
-                                height: 150,
-                                width: double.infinity,
-                              ),
-                              Positioned(
-                                bottom: 8,
-                                right: 8,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black87,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Tooltip(
-                                    message: playlist['playlist_real_name'] ??
-                                        S.of(context).notitle,
-                                    child: Text(
-                                      playlist['playlist_real_name'] ??
-                                          S.of(context).notitle,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${S.of(context).total_Videos}: ${playlist['playlist_total_videos'] ?? 0}    ${S.of(context).total_Time}: ${playlist['playlist_total_time'] ?? 0}",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+        return ListView.builder(
+          itemCount: snapshot.data!.length,
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          itemBuilder: (context, index) {
+            final playlist = snapshot.data![index];
+            return _buildPlaylistItem(context, playlist);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildPlaylistItem(BuildContext context, Map<String, dynamic> playlist) {
+    return GestureDetector(
+      onTap: () {
+        _showBottomSheet(context, playlist);
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12.0)),
+              child: Image.network(
+                playlist['playlist_image'] ?? 'https://via.placeholder.com/150',
+                fit: BoxFit.cover,
+                height: 150,
+                width: double.infinity,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    playlist['playlist_real_name'] ?? S.of(context).notitle,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PlaylistInputScreen(),
+                  const SizedBox(height: 8),
+                  Text(
+                    "${S.of(context).total_Videos}: ${playlist['playlist_total_videos'] ?? 0}    ${S.of(context).total_Time}: ${playlist['playlist_total_time'] ?? 0}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          );
-
-          if (result == true) {
-            setState(() {
-              playlists = DatabaseHelper().getPlaylists(); // refresh playlists
-            });
-          }
-        },
-        child: const Icon(Icons.add),
+          ],
+        ),
       ),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context, Map<String, dynamic> playlist) {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.playlist_play),
+              title: Text(S.of(context).view_Playlist),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VideoPreviewScreen(
+                      playlistId: playlist['playlist_id'],
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.directions_run),
+              title: Text(S.of(context).view_Playlist_Roadmap),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp1(playlistId: playlist['playlist_id']),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: Text("S.of(context).delete_Playlist"),
+              onTap: () {
+                _deletePlaylist(context, playlist['playlist_id']);
+              },
+            ),
+          ],
+        ),
+      ),
+      enableDrag: true,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+    );
+  }
+
+  void _deletePlaylist(BuildContext context, String playlistId) async {
+    Navigator.pop(context); // Close the bottom sheet
+
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("S.of(context).confirm_delete"),
+        content: Text("S.of(context).are_you_sure_you_want_to_delete_this_playlist"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text("S.of(context).cancel"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(S.of(context).delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmDelete == true) {
+      try {
+        await DatabaseHelper().deletePlaylist(playlistId);
+        setState(() {
+          playlists = DatabaseHelper().getPlaylists(); // Refresh playlists
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("S.of(context).playlist_deleted_successfully")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${S.of(context).error}: $e')),
+        );
+      }
+    }
+  }
+
+  FloatingActionButton _buildFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PlaylistInputScreen(),
+          ),
+        );
+
+        if (result == true) {
+          setState(() {
+            playlists = DatabaseHelper().getPlaylists(); // Refresh playlists
+          });
+        }
+      },
+      child: const Icon(Icons.add),
     );
   }
 }
