@@ -7,3 +7,5 @@ Color PrimaryColor = const Color(0xFFFF0000);
 Color PrimaryTextColor = const Color(0xFF282828);
 Color SecondaryTextColor = const Color(0xFF909090);
 Color SecondaryColor = const Color(0xFFFFFFFF);
+late String languageCode; // Default value
+late bool isDarkMode; 

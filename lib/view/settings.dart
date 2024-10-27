@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -103,8 +105,8 @@ class _SettingsListStateState extends State<SettingsListState> {
             child: const Text("Save"),
             onPressed: () {
               _savePreferences(selectedLanguage, isDarkMode);
-              BlocProvider.of<UpdataAppCubit>(context).updataApp();
-              Get.back();
+              BlocProvider.of<UpdataAppCubit>(context).updateApp();
+              Get.forceAppUpdate();
             },
           ),
         ),
@@ -120,9 +122,13 @@ class _SettingsListStateState extends State<SettingsListState> {
       trailing: DropdownButton<String>(
         value: selectedLanguage,
         onChanged: (String? newValue) {
+          Get.snackbar("Language Changed",
+              "Restart the app to see changes \n or Click on save button");
           setState(() {
             selectedLanguage = newValue!;
             _savePreferences(newValue, isDarkMode);
+            BlocProvider.of<UpdataAppCubit>(context).updateLanguage(newValue);
+            // تحديث اللغة
           });
         },
         items: ['en', 'ar'].map<DropdownMenuItem<String>>((String value) {
@@ -137,6 +143,7 @@ class _SettingsListStateState extends State<SettingsListState> {
 
   // Theme Mode Toggle
   ListTile _buildThemeTile(BuildContext context) {
+    final cubit = BlocProvider.of<UpdataAppCubit>(context);
     return ListTile(
       leading: const Icon(Icons.brightness_6),
       title: Text(S.of(context).darkMode),
@@ -146,9 +153,11 @@ class _SettingsListStateState extends State<SettingsListState> {
         onChanged: (bool value) {
           setState(() {
             isDarkMode = value;
-            _savePreferences(selectedLanguage, value);
+            cubit.updateTheme(value);
+            BlocProvider.of<UpdataAppCubit>(context).updateTheme(value);
+            Get.snackbar("theme Changed",
+                "Restart the app to see changes \n or Click on save button");
           });
-          BlocProvider.of<UpdataAppCubit>(context).updataApp();
         },
       ),
     );
@@ -163,5 +172,54 @@ class _SettingsListStateState extends State<SettingsListState> {
       default:
         return 'Unknown';
     }
+  }
+}
+
+class FeaturesScreen extends StatelessWidget {
+  const FeaturesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Main Features",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              Image.asset("assets/images/feature.png"),
+              const SizedBox(height: 20),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("- Get links from YouTube."),
+                  Text("- Add notes for each video."),
+                  Text("- Categorize videos."),
+                ],
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () {
+                  // Action on button press
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Text("Next"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

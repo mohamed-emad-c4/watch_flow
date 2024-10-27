@@ -11,7 +11,7 @@ import 'package:watch_flow/view/settings.dart';
 import '../../../data/databases.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key, required bool isIntialized});
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {

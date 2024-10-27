@@ -8,7 +8,6 @@ import '../../view/setting_views/about_us.dart';
 import '../../view/setting_views/help_and_support.dart';
 import '../../view/setting_views/privacy_and_security.dart';
 
-
 class Setting extends StatelessWidget {
   const Setting({super.key});
 
@@ -67,7 +66,7 @@ class _SettingsListStateState extends State<SettingsListState> {
       children: [
         _buildLanguageTile(context),
         const Divider(),
-        _buildThemeTile(context), // وضع التبديل للوضع الليلي
+        _buildThemeTile(context),
         const Divider(),
         build_tablet(
             title: S.of(context).PrivacyAndSecurity,
@@ -92,13 +91,13 @@ class _SettingsListStateState extends State<SettingsListState> {
   ListTile _buildLanguageTile(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.language),
-      title: Text(S.of(context).settings),
+      title: Text(S.of(context).language),
       trailing: DropdownButton<String>(
         value: selectedLanguage,
         onChanged: (String? newValue) {
           setState(() {
             selectedLanguage = newValue!;
-            _savePreferences(newValue, isDarkMode); // حفظ اللغة والوضع
+            _savePreferences(newValue, isDarkMode);
           });
         },
         items: ['en', 'ar'].map<DropdownMenuItem<String>>((String value) {
