@@ -48,8 +48,9 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE videos_info(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-         TEXT NOT NULL,
+         
         video_url TEXT,
+         video_tittle TEXT,
         video_image TEXT,
         video_duration TEXT,
         learning_task TEXT,

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:watch_flow/logic/ai_response/ai.dart';
 import 'package:watch_flow/logic/helper.dart';
 import 'package:watch_flow/generated/l10n.dart';
 import '../../../data/databases.dart';
 import '../../../logic/cubit/update_home_cubit.dart';
+import '../../../logic/globalVaribul.dart';
+import '../../../model/playList.dart';
 
 class PlaylistInputScreen extends StatefulWidget {
   const PlaylistInputScreen({super.key});
@@ -19,6 +22,8 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
   final TextEditingController _timeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+
+  String curentMessage = ''; // Declare curentMessage as a state variable
 
   String? _validateUrl(String? value) {
     if (value == null || value.isEmpty) {
@@ -45,9 +50,11 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
+      curentMessage = "Starting the insertion process...";
       _isLoading = true;
     });
 
+    List<VideoInfoModel> getAllVideosInPlaylistD = [];
     try {
       String url = _urlController.text.trim();
       String notes = _notesController.text.trim();
@@ -57,18 +64,71 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
 
       if (playlistId.isEmpty) {
         _showSnackbar(S.of(context).invalid_playlist_url);
+        setState(() {
+          curentMessage = "Check your playlist URL ......";
+          _isLoading = false;
+        });
         return;
       }
+
+      setState(() {
+        curentMessage = "Checking if playlist exists...";
+      });
 
       bool playlistExists = await DatabaseHelper().isPlaylistExists(playlistId);
       if (playlistExists) {
-        _showSnackbar("playlist already exists");
+        Get.snackbar(
+          "✖️ Playlist already exists ✖️",
+          "Please add another playlist",
+          colorText: Colors.white,
+          backgroundColor: Colors.red.shade500,
+        );
+        setState(() {
+          curentMessage = "Error: Playlist already exists";
+          _isLoading = false;
+        });
         return;
       }
 
-      await HelperFunction().getAllVideosInPlaylist(playlistId);
+      setState(() {
+        curentMessage = "Fetching videos from the playlist...";
+      });
+
+      getAllVideosInPlaylistD =
+          await HelperFunction().getAllVideosInPlaylist(playlistId, notes);
+
+      if (getAllVideosInPlaylistD.isEmpty) {
+        Get.snackbar(
+          "✖️ Playlist not found ✖️",
+          "Please add another playlist link",
+          colorText: Colors.white,
+          backgroundColor: Colors.red.shade500,
+        );
+        setState(() {
+          curentMessage = "Error: Playlist not found";
+          _isLoading = false;
+        });
+        return;
+      }
+
+      setState(() {
+        curentMessage = "Processing AI response...";
+      });
+
       await GiminiAi().aiResponse(
           int.parse(time) + (int.parse(time) * 0.25).toInt(), playlistId);
+
+      Get.snackbar(
+        "✔️ Playlist added ✔️",
+        "Done",
+        colorText: Colors.white,
+        backgroundColor: Colors.green.shade500,
+      );
+
+      setState(() {
+        curentMessage = "Done";
+        _isLoading = false;
+      });
 
       BlocProvider.of<UpdateHomeCubit>(context).updateHome();
       Navigator.pop(context, true);
@@ -76,8 +136,8 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
       _showSnackbar('${S.of(context).error}: $e');
       print('Error: $e');
       print('Stack Trace: $stackTrace');
-    } finally {
       setState(() {
+        curentMessage = "An error occurred: $e";
         _isLoading = false;
       });
     }
@@ -112,7 +172,6 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         filled: true,
-        fillColor: Colors.grey[200],
       ),
       keyboardType: keyboardType,
       validator: validator,
@@ -127,7 +186,7 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
         title: Text(S.of(context).add_Playlist),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(3.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -170,7 +229,21 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
                     style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
-                if (_isLoading) const Center(child: CircularProgressIndicator()),
+                if (_isLoading)
+                  Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const Center(child: CircularProgressIndicator()),
+                      if (curentMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            curentMessage,
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                    ],
+                  ),
               ],
             ),
           ),

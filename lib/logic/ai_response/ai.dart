@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 import '../../data/databases.dart';
+import '../globalVaribul.dart';
 import '../helper.dart';
 
 const String giminiAiApiKey = "AIzaSyCLPtP-PRbk5R11EUZbpYdM1USwPRyHj5o";
@@ -14,6 +15,7 @@ class GiminiAi {
   List<Map<String, dynamic>> allInfoPlaylist = [];
 
   Future<void> aiResponse(int durationOfDay, String playlistId) async {
+     CurentMessage = " AI request started ...";
     int numberDays = 0;
     try {
       log("started aiResponse");
@@ -173,7 +175,9 @@ remember aproximately in $numberDays days and the total duration is approximatel
             //log(' $i Updated rows count: $result');
             i++;
           }
+        
         }
+        CurentMessage = " Done updating video days in DB ...";
       } catch (e) {
         log("Error in aiResponse: $e");
         print(e); // في حالة وجود خطأ
@@ -182,4 +186,5 @@ remember aproximately in $numberDays days and the total duration is approximatel
       log("Error in aiResponse: $e");
     }
   }
+  
 }

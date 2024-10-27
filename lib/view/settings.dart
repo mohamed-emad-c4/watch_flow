@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:watch_flow/logic/shared_preferences.dart';
 import 'package:watch_flow/view/screens/intail/widgets/build_tablet.dart';
@@ -98,18 +96,7 @@ class _SettingsListStateState extends State<SettingsListState> {
           onTap: () => Get.to(const FAQSection()),
           icon: Icons.question_answer,
         ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: ElevatedButton(
-            child: const Text("Save"),
-            onPressed: () {
-              _savePreferences(selectedLanguage, isDarkMode);
-              BlocProvider.of<UpdataAppCubit>(context).updateApp();
-              Get.forceAppUpdate();
-            },
-          ),
-        ),
+     
       ],
     );
   }
@@ -123,11 +110,12 @@ class _SettingsListStateState extends State<SettingsListState> {
         value: selectedLanguage,
         onChanged: (String? newValue) {
           Get.snackbar("Language Changed",
-              "Restart the app to see changes \n or Click on save button");
+              "Restart the app to see changes");
           setState(() {
             selectedLanguage = newValue!;
             _savePreferences(newValue, isDarkMode);
             BlocProvider.of<UpdataAppCubit>(context).updateLanguage(newValue);
+             Get.forceAppUpdate();
             // تحديث اللغة
           });
         },
@@ -158,6 +146,7 @@ class _SettingsListStateState extends State<SettingsListState> {
             Get.snackbar("theme Changed",
                 "Restart the app to see changes \n or Click on save button");
           });
+           Get.forceAppUpdate();
         },
       ),
     );

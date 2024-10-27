@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:watch_flow/data/databases.dart';
@@ -11,12 +10,15 @@ class HelperFunction {
   final Dio _dio = Dio();
   //calculating number of days .
   int calculateNumberOfDays(int duration) {
+        CurentMessage = "Calculating number of days ...";
+
     int numberOfDays = duration ~/ 86400;
     return numberOfDays;
   }
 
   // Fetch all videos from a playlist and their details
-  Future<List<VideoInfoModel>> getAllVideosInPlaylist(String playlistId) async {
+  Future<List<VideoInfoModel>> getAllVideosInPlaylist(String playlistId ,String playlistNote) async {
+        CurentMessage = "Fetching all videos in playlist ...";
     log("getAllVideosInPlaylist started");
     List<VideoInfoModel> videoDetailsList = [];
     String nextPageToken = '';
@@ -40,9 +42,10 @@ class HelperFunction {
         );
 
         final data = response.data;
+    CurentMessage = "Done fetching all videos in playlist ...";
 
         final items = data['items'];
-
+        CurentMessage = "Insert all videos in playlist ...";
         for (var item in items) {
           final videoId = item['contentDetails']['videoId'];
           final title = item['snippet']['title'];
@@ -73,6 +76,7 @@ class HelperFunction {
           await DatabaseHelper().insertVideo(insertVideo);
           videoDetailsList.add(videoInfo);
         }
+    CurentMessage = "Done insert all videos in playlist ...";
 
         log(sumTotalTime(videoDetailsList));
         nextPageToken = data['nextPageToken'] ?? '';
@@ -86,7 +90,7 @@ class HelperFunction {
         "playlist_image": data[2],
         "playlist_total_videos": videoDetailsList.length.toString(),
         "playlist_total_time": sumTotalTime(videoDetailsList).toString(),
-        "playlist_notes": "",
+        "playlist_notes": "$playlistNote",
         "playlist_start_at": start,
         "playlist_end_at": end,
         "playlist_status": 0,
@@ -97,12 +101,16 @@ class HelperFunction {
       log('Total videos fetched: ${videoDetailsList.length}');
     } catch (e) {
       log('Error fetching playlist videos: $e');
+      return [];
+      
     }
 
     return videoDetailsList;
   }
 
   Future<List<String?>> getPlaylistInfo(String playlistId) async {
+        CurentMessage = " Fetching playlist info ...";
+
     final url =
         'https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=$playlistId&key=$API_KEY';
     List<String?> retun = [];
@@ -119,6 +127,7 @@ class HelperFunction {
           retun.add(data['items'][0]['snippet']['thumbnails']['high']['url']);
 
           // استرجاع عنوان قائمة التشغيل
+           CurentMessage = "Done Fetching playlist info ...";
           return retun;
         } else {
           print(
@@ -133,10 +142,12 @@ class HelperFunction {
       print('Request failed with error: $e');
       return [];
     }
+    
   }
 
   // Fetch video duration by ID
   Future<String> getDurationVideo(String videoId) async {
+     CurentMessage = " Fetching video duration ...";
     try {
       final response = await _dio.get(
         'https://www.googleapis.com/youtube/v3/videos',
@@ -148,16 +159,18 @@ class HelperFunction {
       );
 
       final duration = response.data['items'][0]['contentDetails']['duration'];
-
+       CurentMessage = " Done fetching video duration ...";
       return extractDuration(duration);
     } catch (e) {
       log('Error fetching video duration: $e');
+       CurentMessage = " Error fetching video duration ...";
       return 'N/A';
     }
   }
 
   // Helper function to format duration from ISO 8601
   String extractDuration(String duration) {
+     CurentMessage = " Extracting duration ...";
     final regex = RegExp(r'PT(\d+H)?(\d+M)?(\d+S)?');
     final match = regex.firstMatch(duration);
 
@@ -172,14 +185,16 @@ class HelperFunction {
           ? int.parse(match.group(3)!.replaceAll('S', ''))
           : 0;
 
+ CurentMessage = " Done extracting duration ...";
       return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     }
-
+ CurentMessage = " Error extracting duration ...";
     return 'N/A';
   }
 
   // Calculate total time from a list of video durations
   String sumTotalTime(List<VideoInfoModel> videoList) {
+     CurentMessage = " Sum total time ...";
     int totalSeconds = 0;
 
     for (var video in videoList) {
@@ -197,27 +212,32 @@ class HelperFunction {
     totalSeconds %= 3600;
     final totalMinutes = totalSeconds ~/ 60;
     totalSeconds %= 60;
-
+ CurentMessage = " Done Sum total time ...";
     return '${totalHours.toString().padLeft(2, '0')}:${totalMinutes.toString().padLeft(2, '0')}:${totalSeconds.toString().padLeft(2, '0')}';
   }
 
   Future<List<String?>> getPlaylistIfoFromDB(String playlistId) async {
+     CurentMessage = " Fetching playlist info from DB ...";
     List<Map<String, dynamic>> allInfoPlaylist =
         await DatabaseHelper().getPlaylistById(playlistId);
     log("allInfoPlaylist :: ${allInfoPlaylist[0]['playlist_real_name']}");
-
+ CurentMessage = " Done Fetching playlist info from DB ...";
     return [];
   }
 
   Future<List<Map<String, dynamic>>> getALLVideosINPlaylistIfoFromDB(
+    
       String playlistId) async {
+         CurentMessage = " Fetching all videos in playlist from DB ...";
     List<Map<String, dynamic>> allInfoPlaylist =
         await DatabaseHelper().getVideosByPlaylistId(playlistId);
     // log("allInfoPlaylist :: ${allInfoPlaylist.length.toString()}");
+     CurentMessage = " Done Fetching all videos in playlist from DB ...";
     return allInfoPlaylist;
   }
 
   int timeToMinutes(String time) {
+     CurentMessage = " Converting time to minutes ...";
     // Split the time string into hours, minutes, and seconds
     List<String> parts = time.split(':');
 
@@ -231,11 +251,12 @@ class HelperFunction {
 
     // Convert seconds to minutes and add them
     totalMinutes += seconds ~/ 60;
-
+ CurentMessage = " Done Converting time to minutes ...";
     return totalMinutes;
   }
 
   Future<String> extractJsonFromText(String text) async {
+     CurentMessage = " processing and handling response ...";
     // البحث عن بداية ونهاية الجزء اللي بيحتوي على الـ JSON
     int startIndex = text.indexOf('```json');
     int endIndex = text.lastIndexOf('```');
@@ -246,6 +267,7 @@ class HelperFunction {
     // استخراج الـ JSON من النص
     String jsonPart = text.substring(startIndex + 7, endIndex).trim();
     // إعادة النص مباشرة كـ String
+     CurentMessage = " Done processing and handling response ...";
     return jsonPart;
   }
 }

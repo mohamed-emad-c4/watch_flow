@@ -45,14 +45,6 @@ class _MyApp1State extends State<MyApp1> {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Add settings button action
-            },
-          ),
-        ],
       ),
       body: FutureBuilder<List<Video>>(
         future: _videosFuture,
@@ -271,34 +263,16 @@ class VideoScreen extends StatelessWidget {
         int day = groupedVideos.keys.elementAt(index);
         List<Video> dayVideos = groupedVideos[day]!;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Day $day',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                ),
-              ),
+        return ExpansionTile(
+          title: Text(
+            'Day $day (${dayVideos.length} videos)',
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.deepPurple,
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: dayVideos.length,
-              itemBuilder: (context, index) {
-                return VideoCard(video: dayVideos[index]);
-              },
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-              height: 32,
-            ),
-          ],
+          ),
+          children: dayVideos.map((video) => VideoCard(video: video)).toList(),
         );
       },
     );

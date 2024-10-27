@@ -97,7 +97,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                                 ),
                                 const SizedBox(height: 8.0),
                                 Text(
-                                  'Duration: ${video['video_duration']}}',
+                                  'Duration: ${video['video_duration']}',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
