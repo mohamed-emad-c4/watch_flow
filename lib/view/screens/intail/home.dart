@@ -45,6 +45,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
     playlists = DatabaseHelper().getPlaylists();
+    
+
   }
 
   @override
@@ -65,7 +67,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         IconButton(
           icon: const Icon(Icons.settings),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const Setting()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Setting()),
+            );
           },
         ),
       ],
@@ -79,7 +84,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('${S.of(context).error}: ${snapshot.error}'));
+          return Center(
+              child: Text('${S.of(context).error}: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text(S.of(context).no_playlists_found));
         }
@@ -89,6 +95,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           itemBuilder: (context, index) {
             final playlist = snapshot.data![index];
+            
             return _buildPlaylistItem(context, playlist);
           },
         );
@@ -96,7 +103,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     );
   }
 
-  Widget _buildPlaylistItem(BuildContext context, Map<String, dynamic> playlist) {
+  Widget _buildPlaylistItem(
+      BuildContext context, Map<String, dynamic> playlist) {
     return GestureDetector(
       onTap: () {
         _showBottomSheet(context, playlist);
@@ -111,7 +119,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12.0)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12.0)),
               child: Image.network(
                 playlist['playlist_image'] ?? 'https://via.placeholder.com/150',
                 fit: BoxFit.cover,
@@ -153,7 +162,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       Container(
         padding: const EdgeInsets.all(16.0),
         decoration: const BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
@@ -185,7 +193,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyApp1(playlistId: playlist['playlist_id']),
+                    builder: (context) =>
+                        MyApp1(playlistId: playlist['playlist_id']),
                   ),
                 );
               },
@@ -194,6 +203,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               leading: const Icon(Icons.delete),
               title: Text("S.of(context).delete_Playlist"),
               onTap: () {
+                Navigator.pop(context);
                 _deletePlaylist(context, playlist['playlist_id']);
               },
             ),
@@ -212,13 +222,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   void _deletePlaylist(BuildContext context, String playlistId) async {
-    Navigator.pop(context); // Close the bottom sheet
-
     bool confirmDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text("S.of(context).confirm_delete"),
-        content: Text("S.of(context).are_you_sure_you_want_to_delete_this_playlist"),
+        content:
+            Text("S.of(context).are_you_sure_you_want_to_delete_this_playlist"),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -238,8 +247,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         setState(() {
           playlists = DatabaseHelper().getPlaylists(); // Refresh playlists
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("S.of(context).playlist_deleted_successfully")),
+        Get.snackbar(
+          "S.of(context).success",
+         " S.of(context).playlist_deleted_successfully",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
