@@ -109,8 +109,8 @@ class _SettingsListStateState extends State<SettingsListState> {
       trailing: DropdownButton<String>(
         value: selectedLanguage,
         onChanged: (String? newValue) {
-          Get.snackbar("Language Changed",
-              "Restart the app to see changes");
+          Get.snackbar(S.of(context).language_changed,
+              S.of(context).restartTheApplicationToSeeChanges);
           setState(() {
             selectedLanguage = newValue!;
             _savePreferences(newValue, isDarkMode);
@@ -143,8 +143,8 @@ class _SettingsListStateState extends State<SettingsListState> {
             isDarkMode = value;
             cubit.updateTheme(value);
             BlocProvider.of<UpdataAppCubit>(context).updateTheme(value);
-            Get.snackbar("theme Changed",
-                "Restart the app to see changes \n or Click on save button");
+            Get.snackbar(S.of(context).theme_changed,
+                "${S.of(context).restartTheApplicationToSeeChanges} \n ${S.of(context).or_click_save}");
           });
            Get.forceAppUpdate();
         },
@@ -159,7 +159,7 @@ class _SettingsListStateState extends State<SettingsListState> {
       case 'ar':
         return S.of(context).arabic;
       default:
-        return 'Unknown';
+        return S.of(context).unkown;
     }
   }
 }
@@ -176,20 +176,19 @@ class FeaturesScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Main Features",
+               Text(S.of(context).main_features
+                ,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Image.asset("assets/images/feature.png"),
               const SizedBox(height: 20),
-              const Column(
+               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("- Get links from YouTube."),
-                  Text("- Add notes for each video."),
-                  Text("- Categorize videos."),
-                ],
+                  Text(S.of(context).feature1)   ,
+                  Text(S.of(context).feature2),
+                  Text(S.of(context).feature3),],
               ),
               const SizedBox(height: 40),
               ElevatedButton(
@@ -203,7 +202,7 @@ class FeaturesScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: const Text("Next"),
+                child:  Text(S.of(context).next),
               ),
             ],
           ),

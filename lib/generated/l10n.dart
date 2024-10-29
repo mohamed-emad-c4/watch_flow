@@ -520,10 +520,10 @@ class S {
     );
   }
 
-  /// `If you didn't find the answer you're looking for, feel free to contact us directly:`
+  /// `If you didn't find the answer you're looking for, feel free to contact us`
   String get DidntFindAnswer {
     return Intl.message(
-      'If you didn\'t find the answer you\'re looking for, feel free to contact us directly:',
+      'If you didn\'t find the answer you\'re looking for, feel free to contact us',
       name: 'DidntFindAnswer',
       desc: '',
       args: [],
@@ -1165,6 +1165,516 @@ class S {
     return Intl.message(
       'Task',
       name: 'task',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Watch Flow`
+  String get watch_flow {
+    return Intl.message(
+      'Watch Flow',
+      name: 'watch_flow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Watch Video`
+  String get watch_video {
+    return Intl.message(
+      'Watch Video',
+      name: 'watch_video',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message(
+      'Completed',
+      name: 'completed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pending`
+  String get pending {
+    return Intl.message(
+      'Pending',
+      name: 'pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed`
+  String get failed {
+    return Intl.message(
+      'Failed',
+      name: 'failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language changed`
+  String get language_changed {
+    return Intl.message(
+      'Language changed',
+      name: 'language_changed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restart the application to see changes`
+  String get restartTheApplicationToSeeChanges {
+    return Intl.message(
+      'Restart the application to see changes',
+      name: 'restartTheApplicationToSeeChanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Or click Save Bottom To Apply changes`
+  String get or_click_save {
+    return Intl.message(
+      'Or click Save Bottom To Apply changes',
+      name: 'or_click_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme Changed`
+  String get theme_changed {
+    return Intl.message(
+      'Theme Changed',
+      name: 'theme_changed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main Features`
+  String get main_features {
+    return Intl.message(
+      'Main Features',
+      name: 'main_features',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- Get links from YouTube.`
+  String get feature1 {
+    return Intl.message(
+      '- Get links from YouTube.',
+      name: 'feature1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- Add notes for each video.`
+  String get feature2 {
+    return Intl.message(
+      '- Add notes for each video.',
+      name: 'feature2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- Get links from YouTube.`
+  String get feature3 {
+    return Intl.message(
+      '- Get links from YouTube.',
+      name: 'feature3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown`
+  String get unkown {
+    return Intl.message(
+      'Unknown',
+      name: 'unkown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you need help, please contact us`
+  String get help_needed {
+    return Intl.message(
+      'If you need help, please contact us',
+      name: 'help_needed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learning Task`
+  String get learinig_task {
+    return Intl.message(
+      'Learning Task',
+      name: 'learinig_task',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark as Done`
+  String get mark_as_done {
+    return Intl.message(
+      'Mark as Done',
+      name: 'mark_as_done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Video`
+  String get open_video {
+    return Intl.message(
+      'Open Video',
+      name: 'open_video',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Playlist`
+  String get open_playlist {
+    return Intl.message(
+      'Open Playlist',
+      name: 'open_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Playlist`
+  String get delete_playlist {
+    return Intl.message(
+      'Delete Playlist',
+      name: 'delete_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Video`
+  String get delete_video {
+    return Intl.message(
+      'Delete Video',
+      name: 'delete_video',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Day`
+  String get day {
+    return Intl.message(
+      'Day',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Videos`
+  String get videos {
+    return Intl.message(
+      'Videos',
+      name: 'videos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Delete`
+  String get confirm_delete {
+    return Intl.message(
+      'Confirm Delete',
+      name: 'confirm_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this playlist?`
+  String get are_you_sure_you_want_to_delete_this_playlist {
+    return Intl.message(
+      'Are you sure you want to delete this playlist?',
+      name: 'are_you_sure_you_want_to_delete_this_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancle {
+    return Intl.message(
+      'Cancel',
+      name: 'cancle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Success`
+  String get success {
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Playlist deleted successfully`
+  String get playlist_deleted_successfully {
+    return Intl.message(
+      'Playlist deleted successfully',
+      name: 'playlist_deleted_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this video?`
+  String get are_you_sure_you_want_to_delete_this_video {
+    return Intl.message(
+      'Are you sure you want to delete this video?',
+      name: 'are_you_sure_you_want_to_delete_this_video',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video deleted successfully`
+  String get video_deleted_successfully {
+    return Intl.message(
+      'Video deleted successfully',
+      name: 'video_deleted_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Videos deleted successfully`
+  String get videos_deleted_successfully {
+    return Intl.message(
+      'Videos deleted successfully',
+      name: 'videos_deleted_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Playlist already exists`
+  String get playlist_already_exists {
+    return Intl.message(
+      'Playlist already exists',
+      name: 'playlist_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video already exists`
+  String get video_already_exists {
+    return Intl.message(
+      'Video already exists',
+      name: 'video_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert Notes`
+  String get insert_notes {
+    return Intl.message(
+      'Insert Notes',
+      name: 'insert_notes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert Links`
+  String get insert_links {
+    return Intl.message(
+      'Insert Links',
+      name: 'insert_links',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert Roadmap`
+  String get insert_roadmap {
+    return Intl.message(
+      'Insert Roadmap',
+      name: 'insert_roadmap',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check if the URL is correct`
+  String get check_if_the_url {
+    return Intl.message(
+      'Check if the URL is correct',
+      name: 'check_if_the_url',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check if the playlist exists`
+  String get check_if_the_playlist_exist {
+    return Intl.message(
+      'Check if the playlist exists',
+      name: 'check_if_the_playlist_exist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add another playlist link`
+  String get please_add_another_playlist_link {
+    return Intl.message(
+      'Please add another playlist link',
+      name: 'please_add_another_playlist_link',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fetching videos from playlist........`
+  String get fetching_videos_from_playlist {
+    return Intl.message(
+      'Fetching videos from playlist........',
+      name: 'fetching_videos_from_playlist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Starting the insertion process.....`
+  String get starting_inserting {
+    return Intl.message(
+      'Starting the insertion process.....',
+      name: 'starting_inserting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Playlist not found`
+  String get platlist_not_found {
+    return Intl.message(
+      'Playlist not found',
+      name: 'platlist_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Processing AI Response .........`
+  String get processing_ai_response {
+    return Intl.message(
+      'Processing AI Response .........',
+      name: 'processing_ai_response',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI Response`
+  String get ai_response {
+    return Intl.message(
+      'AI Response',
+      name: 'ai_response',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done inserting`
+  String get done_inserting {
+    return Intl.message(
+      'Done inserting',
+      name: 'done_inserting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Playlist added successfully`
+  String get playlist_added_successfully {
+    return Intl.message(
+      'Playlist added successfully',
+      name: 'playlist_added_successfully',
       desc: '',
       args: [],
     );

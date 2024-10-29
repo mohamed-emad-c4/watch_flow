@@ -17,10 +17,7 @@ void main() async {
   final sharedPref = SharePrefrenceClass();
   bool isInitialized =
       await sharedPref.getVlue(key: "isInitialized", defaultValue: false);
-  // String languageCode =
-  //     await sharedPref.getVlue(key: 'language', defaultValue: 'en');
-  // bool isDarkMode =
-  //     await sharedPref.getVlue(key: 'themeMode', defaultValue: false);
+ 
   languageCode = await sharedPref.getVlue(
       key: 'language', defaultValue: 'en'); // Default value
   isDarkMode = await sharedPref.getVlue(key: 'themeMode', defaultValue: false);

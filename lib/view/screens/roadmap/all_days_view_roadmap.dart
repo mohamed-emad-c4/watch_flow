@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:watch_flow/generated/l10n.dart';
 
 import '../../../data/databases.dart';
 import '../../../model/playList.dart';
@@ -26,7 +27,7 @@ class _MyApp1State extends State<MyApp1> {
     try {
       return await DatabaseHelper().getVideosByPlaylistIdAI(widget.playlistId);
     } catch (e) {
-      throw 'Error fetching videos: $e';
+      throw '${S.of(context).error}: $e';
     }
   }
 
@@ -34,7 +35,9 @@ class _MyApp1State extends State<MyApp1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Video Playlist'),
+        title: Text(
+          S.of(context).all_Videos,
+        ),
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -54,7 +57,7 @@ class _MyApp1State extends State<MyApp1> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No videos found.'));
+            return  Center(child: Text(S.of(context).no_videos_found));
           } else {
             return VideoScreen(videos: snapshot.data!);
           }
@@ -100,11 +103,11 @@ class _VideoCardState extends State<VideoCard> {
       if (await canLaunch(url)) {
         await launch(url);
       } else {
-        throw 'Could not launch $url';
+        throw '${S.of(context).could_not_launch} $url';
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error launching URL: $e')),
+        SnackBar(content: Text('${S.of(context).could_not_launch}: $e')),
       );
     }
   }
@@ -178,7 +181,7 @@ class _VideoCardState extends State<VideoCard> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Duration: ${widget.video.videoDuration}',
+                          '${S.of(context).duration}: ${widget.video.videoDuration}',
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
@@ -196,7 +199,7 @@ class _VideoCardState extends State<VideoCard> {
                   IconButton(
                     icon: const Icon(Icons.open_in_new, color: Colors.blue),
                     onPressed: () => _launchUrl(widget.video.videoUrl),
-                    tooltip: 'Open Video',
+                    tooltip: S.of(context).open_video,
                   ),
                   IconButton(
                     icon: const Icon(Icons.book, color: Colors.orange),
@@ -205,11 +208,11 @@ class _VideoCardState extends State<VideoCard> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Learning Task'),
+                            title:  Text(S.of(context).learinig_task),
                             content: Text(widget.video.learningTask),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text('OK'),
+                                child:  Text(S.of(context).ok),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -219,7 +222,7 @@ class _VideoCardState extends State<VideoCard> {
                         },
                       );
                     },
-                    tooltip: 'View Learning Task',
+                    tooltip: S.of(context).learinig_task,
                   ),
                   IconButton(
                     icon: Icon(
@@ -229,7 +232,7 @@ class _VideoCardState extends State<VideoCard> {
                       color: widget.video.isDone ? Colors.green : Colors.grey,
                     ),
                     onPressed: _markAsDone,
-                    tooltip: 'Mark as Done',
+                    tooltip: S.of(context).mark_as_done,
                   ),
                 ],
               ),
@@ -265,7 +268,7 @@ class VideoScreen extends StatelessWidget {
 
         return ExpansionTile(
           title: Text(
-            'Day $day (${dayVideos.length} videos)',
+            '${S.of(  context).day} $day (${dayVideos.length} ${S.of(context).videos})',
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,

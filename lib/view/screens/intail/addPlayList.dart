@@ -50,7 +50,7 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
-      curentMessage = "Starting the insertion process...";
+      curentMessage = S.of(context).starting_inserting;
       _isLoading = true;
     });
 
@@ -65,33 +65,33 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
       if (playlistId.isEmpty) {
         _showSnackbar(S.of(context).invalid_playlist_url);
         setState(() {
-          curentMessage = "Check your playlist URL ......";
+          curentMessage = S.of(context).check_if_the_url;
           _isLoading = false;
         });
         return;
       }
 
       setState(() {
-        curentMessage = "Checking if playlist exists...";
+        curentMessage = S.of(context).check_if_the_playlist_exist;
       });
 
       bool playlistExists = await DatabaseHelper().isPlaylistExists(playlistId);
       if (playlistExists) {
         Get.snackbar(
-          "✖️ Playlist already exists ✖️",
-          "Please add another playlist",
+          "✖️ ${S.of(context).playlist_already_exists} ✖️",
+          S.of(context).please_add_another_playlist_link,
           colorText: Colors.white,
           backgroundColor: Colors.red.shade500,
         );
         setState(() {
-          curentMessage = "Error: Playlist already exists";
+          curentMessage = S.of(context).playlist_already_exists;
           _isLoading = false;
         });
         return;
       }
 
       setState(() {
-        curentMessage = "Fetching videos from the playlist...";
+        curentMessage = S.of(context).fetching_videos_from_playlist;
       });
 
       getAllVideosInPlaylistD =
@@ -99,34 +99,34 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
 
       if (getAllVideosInPlaylistD.isEmpty) {
         Get.snackbar(
-          "✖️ Playlist not found ✖️",
-          "Please add another playlist link",
+          "✖️ ${S.of(context).platlist_not_found} ✖️",
+          S.of(context).please_add_another_playlist_link,
           colorText: Colors.white,
           backgroundColor: Colors.red.shade500,
         );
         setState(() {
-          curentMessage = "Error: Playlist not found";
+          curentMessage = "${S.of(context).error}: ${S.of(context).platlist_not_found}";
           _isLoading = false;
         });
         return;
       }
 
       setState(() {
-        curentMessage = "Processing AI response...";
+        curentMessage = S.of(context).processing_ai_response;
       });
 
       await GiminiAi().aiResponse(
           int.parse(time) + (int.parse(time) * 0.25).toInt(), playlistId);
 
       Get.snackbar(
-        "✔️ Playlist added ✔️",
-        "Done",
+        "✔️ ${S.of(context).done} ✔️",
+        "${S.of(context).playlist_added_successfully} ✔️",
         colorText: Colors.white,
         backgroundColor: Colors.green.shade500,
       );
 
       setState(() {
-        curentMessage = "Done";
+        curentMessage = S.of(context).done;
         _isLoading = false;
       });
 
@@ -134,8 +134,8 @@ class _PlaylistInputScreenState extends State<PlaylistInputScreen> {
       Navigator.pop(context, true);
     } catch (e, stackTrace) {
       _showSnackbar('${S.of(context).error}: $e');
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      // print('Error: $e');
+      // print('Stack Trace: $stackTrace');
       setState(() {
         curentMessage = "An error occurred: $e";
         _isLoading = false;

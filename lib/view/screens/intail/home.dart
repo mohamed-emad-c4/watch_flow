@@ -201,12 +201,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.delete),
-              title: Text("S.of(context).delete_Playlist"),
+              title: Text(S.of(context).delete_playlist),
               onTap: () {
                 Navigator.pop(context);
                 _deletePlaylist(context, playlist['playlist_id']);
               },
-            ),
+            )
           ],
         ),
       ),
@@ -222,16 +222,16 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   void _deletePlaylist(BuildContext context, String playlistId) async {
-    bool confirmDelete = await showDialog(
+    bool? confirmDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("S.of(context).confirm_delete"),
+        title: Text(S.of(context).confirm_delete),
         content:
-            Text("S.of(context).are_you_sure_you_want_to_delete_this_playlist"),
+            Text(S.of(context).are_you_sure_you_want_to_delete_this_playlist),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text("S.of(context).cancel"),
+            child: Text(S.of(context).cancle),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -248,8 +248,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           playlists = DatabaseHelper().getPlaylists(); // Refresh playlists
         });
         Get.snackbar(
-          "S.of(context).success",
-         " S.of(context).playlist_deleted_successfully",
+          S.of(context).success,
+          S.of(context).playlist_deleted_successfully,
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
           backgroundColor: Colors.green,

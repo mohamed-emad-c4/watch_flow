@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/l10n.dart';
@@ -54,41 +55,36 @@ class HelpAndSupportPage extends StatelessWidget {
               const SizedBox(height: 20),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BuildSocialMediaButton(
-                      context,
-                      icon: const FaIcon(FontAwesomeIcons.whatsapp),
-                      label: S.of(context).WhatsApp,
-                      color: Colors.green,
-                      onTap: _contactViaWhatsApp,
-                    ),
-                    const SizedBox(width: 20),
-                    BuildSocialMediaButton(
-                      context,
-                      icon: const FaIcon(FontAwesomeIcons.facebook),
-                      label: S.of(context).Messenger,
-                      color: Colors.blue[700]!,
-                      onTap: _contactViaMessenger,
-                    ),
-                    const SizedBox(width: 20),
-                    BuildSocialMediaButton(
-                      context,
-                      icon: const FaIcon(FontAwesomeIcons.twitter),
-                      label: S.of(context).Twitter,
-                      color: Colors.lightBlue,
-                      onTap: _contactViaTwitter,
-                    ),
-                    const SizedBox(width: 20),
-                    BuildSocialMediaButton(
-                      context,
-                      icon: const FaIcon(FontAwesomeIcons.instagram),
-                      label: S.of(context).Instagram,
-                      color: Colors.purpleAccent,
-                      onTap: _contactViaInstagram,
-                    ),
-                  ],
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 20),
+                      BuildSocialMediaButton(
+                        context,
+                        icon: const FaIcon(FontAwesomeIcons.facebook),
+                        label: S.of(context).Messenger,
+                        color: Colors.blue[700]!,
+                        onTap: _contactViaMessenger,
+                      ),
+                      const SizedBox(width: 20),
+                      BuildSocialMediaButton(
+                        context,
+                        icon: const FaIcon(FontAwesomeIcons.twitter),
+                        label: S.of(context).Twitter,
+                        color: Colors.lightBlue,
+                        onTap: _contactViaTwitter,
+                      ),
+                      const SizedBox(width: 20),
+                      BuildSocialMediaButton(
+                        context,
+                        icon: const FaIcon(FontAwesomeIcons.instagram),
+                        label: S.of(context).Instagram,
+                        color: Colors.purpleAccent,
+                        onTap: _contactViaInstagram,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -117,36 +113,20 @@ void _sendEmail() async {
     await launchUrl(emailUri);
   } else {
     // Could not launch the email app
-    Get.snackbar("Error", "'Could not launch Email \n $emailUri");
+    Get.snackbar(S.of(context as BuildContext).error,
+        "${S.of(context as BuildContext).could_not_launch} \n $emailUri");
   }
 }
 
-void _contactViaWhatsApp() async {
-  const String phoneNumber = '201099312476'; // رقم الهاتف بدون +
-  const String message = 'Hello, I need some assistance.';
-
-  final Uri whatsappUri = Uri(
-    scheme: 'https',
-    host: 'wa.me',
-    path: '/$phoneNumber',
-    queryParameters: {
-      'text': message,
-    },
-  );
-
-  String whatsappLink = whatsappUri.toString();
-  print('WhatsApp Link: $whatsappLink');
-
-  try {
-    if (await canLaunch(whatsappLink)) {
-      await launch(whatsappLink);
-    } else {
-      print('Could not launch WhatsApp');
-    }
-  } catch (e) {
-    Get.snackbar("Error", "'Could not launch Instagram \n $e");
-  }
-}
+/// Launches WhatsApp app to contact the developer for help.
+///
+/// Uses the `wa.me` URL scheme to open the WhatsApp app.
+/// The [phoneNumber] is the developer's phone number without the
+/// international dialing code (+).
+/// The [message] is the pre-filled message to send to the developer.
+///
+/// If the WhatsApp app is not installed on the device,
+/// a snackbar will be shown with an error message.
 
 void _contactViaMessenger() async {
   // Replace with your Facebook page URL or Messenger link
@@ -155,7 +135,8 @@ void _contactViaMessenger() async {
     await launch(messengerUri.toString());
   } else {
     // Could not launch Messenger
-    Get.snackbar("Error", "'Could not launch Messenger");
+    Get.snackbar(S.of(context as BuildContext).error,
+        "${S.of(context as BuildContext).could_not_launch} Messenger");
   }
 }
 
@@ -166,7 +147,8 @@ void _contactViaTwitter() async {
     await launch(twitterUri.toString());
   } else {
     // Could not launch Twitter
-    Get.snackbar("Error", "'Could not launch Twitter");
+    Get.snackbar(S.of(context as BuildContext).error,
+        "'${S.of(context as BuildContext).could_not_launch} Twitter");
   }
 }
 
@@ -175,6 +157,7 @@ void _contactViaInstagram() async {
   if (await canLaunch(instagramUri.toString())) {
     await launch(instagramUri.toString());
   } else {
-    Get.snackbar("Error", "'Could not launch Instagram");
+    Get.snackbar(S.of(context as BuildContext).error,
+        "${S.of(context as BuildContext).could_not_launch} Instagram");
   }
 }

@@ -37,7 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "DataEncryption": MessageLookupByLibrary.simpleMessage(
             "تشفير البيانات: نستخدم التشفير المعتمد لحماية بياناتك."),
         "DidntFindAnswer": MessageLookupByLibrary.simpleMessage(
-            "إذا لم تجد الإجابة التي تبحث عنها، لا تتردد في الاتصال بنا مباشرة:"),
+            "إذا لم تجد الإجابة التي تبحث عنها، لا تتردد في الاتصال بنا:"),
         "EmailUs": MessageLookupByLibrary.simpleMessage(
             "راسلنا عبر البريد الإلكتروني"),
         "FAQ": MessageLookupByLibrary.simpleMessage("الأسئلة الشائعة:"),
@@ -97,19 +97,40 @@ class MessageLookup extends MessageLookupByLibrary {
             "ج: قد تكون هناك عدة عوامل تسهم في تأخير تحميل البيانات، بما في ذلك:"),
         "add_Playlist":
             MessageLookupByLibrary.simpleMessage("إضافة قائمة تشغيل"),
+        "ai_response":
+            MessageLookupByLibrary.simpleMessage("رد الذكاء الاصطناعي"),
         "all_Playlists":
             MessageLookupByLibrary.simpleMessage("جميع قوائم التشغيل"),
         "all_Videos": MessageLookupByLibrary.simpleMessage("جميع الفيديوهات"),
         "all_days_roadmap":
             MessageLookupByLibrary.simpleMessage("خريطة كل الايام"),
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
+        "are_you_sure_you_want_to_delete_this_playlist":
+            MessageLookupByLibrary.simpleMessage(
+                "هل أنت متأكد أنك تريد حذف قائمة التشغيل هذه؟"),
+        "are_you_sure_you_want_to_delete_this_video":
+            MessageLookupByLibrary.simpleMessage(
+                "هل أنت متأكد أنك تريد حذف هذا الفيديو؟"),
+        "cancle": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "change_this": MessageLookupByLibrary.simpleMessage(
             "التغييرات على سياسة الخصوصية هذه"),
+        "check_if_the_playlist_exist":
+            MessageLookupByLibrary.simpleMessage("تحقق من وجود قائمة التشغيل"),
+        "check_if_the_url":
+            MessageLookupByLibrary.simpleMessage("تحقق من صحة الرابط"),
+        "completed": MessageLookupByLibrary.simpleMessage("مكتمل"),
+        "confirm_delete": MessageLookupByLibrary.simpleMessage("تأكيد الحذف"),
         "could_not_launch":
             MessageLookupByLibrary.simpleMessage("لا يمكن تشغيل"),
         "darkMode": MessageLookupByLibrary.simpleMessage("الوضع الليلي"),
         "data_security": MessageLookupByLibrary.simpleMessage("أمان البيانات"),
+        "day": MessageLookupByLibrary.simpleMessage("يوم"),
         "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+        "delete_playlist":
+            MessageLookupByLibrary.simpleMessage("حذف قائمة التشغيل"),
+        "delete_video": MessageLookupByLibrary.simpleMessage("حذف الفيديو"),
+        "done": MessageLookupByLibrary.simpleMessage("تم"),
+        "done_inserting": MessageLookupByLibrary.simpleMessage("تم الإدخال"),
         "duration": MessageLookupByLibrary.simpleMessage("المدة"),
         "effective_date": MessageLookupByLibrary.simpleMessage(
             "تاريخ الاطلاق : 1 اكتوبر 2024"),
@@ -119,47 +140,91 @@ class MessageLookup extends MessageLookupByLibrary {
                 "أدخل أي ملاحظات عن قائمة التشغيل"),
         "enter_the_URL_of_the_playlist": MessageLookupByLibrary.simpleMessage(
             "أدخل عنوان URL لقائمة التشغيل"),
-        "enter_time_in_minutes": MessageLookupByLibrary.simpleMessage(
-            "الرجاء ادخال الوقت بالدقائق"),
+        "enter_time_in_minutes":
+            MessageLookupByLibrary.simpleMessage("من فضلك أدخل الوقت بالدقائق"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+        "failed": MessageLookupByLibrary.simpleMessage("فشل"),
+        "feature1": MessageLookupByLibrary.simpleMessage(
+            "- احصل على الروابط من YouTube."),
+        "feature2":
+            MessageLookupByLibrary.simpleMessage("- أضف ملاحظات لكل فيديو."),
+        "feature3": MessageLookupByLibrary.simpleMessage(
+            "- احصل على الروابط من YouTube."),
+        "fetching_videos_from_playlist": MessageLookupByLibrary.simpleMessage(
+            "جارٍ جلب الفيديوهات من قائمة التشغيل........"),
+        "help_needed": MessageLookupByLibrary.simpleMessage(
+            "إذا كنت بحاجة إلى مساعدة، يرجى الاتصال بنا"),
         "how_we_use_your_information":
             MessageLookupByLibrary.simpleMessage("كيف نستخدم معلوماتك"),
         "information_we_collect":
             MessageLookupByLibrary.simpleMessage("المعلومات التي نجمعها"),
         "insert": MessageLookupByLibrary.simpleMessage("إدراج"),
+        "insert_links": MessageLookupByLibrary.simpleMessage("إدخال روابط"),
+        "insert_notes": MessageLookupByLibrary.simpleMessage("إدخال ملاحظات"),
+        "insert_roadmap":
+            MessageLookupByLibrary.simpleMessage("إدخال خارطة طريق"),
         "invalid_playlist_URL": MessageLookupByLibrary.simpleMessage(
             "عنوان URL لقائمة التشغيل غير صالح"),
         "invalid_playlist_url":
-            MessageLookupByLibrary.simpleMessage("الرابط المحدد غير صالح"),
+            MessageLookupByLibrary.simpleMessage("رابط قائمة التشغيل غير صحيح"),
         "language": MessageLookupByLibrary.simpleMessage("لغة"),
+        "language_changed":
+            MessageLookupByLibrary.simpleMessage("تم تغيير اللغة"),
+        "learinig_task": MessageLookupByLibrary.simpleMessage("مهمة تعليمية"),
         "lightMode": MessageLookupByLibrary.simpleMessage("الوضع النهاري"),
         "loading": MessageLookupByLibrary.simpleMessage("تحميل..."),
+        "main_features":
+            MessageLookupByLibrary.simpleMessage("الميزات الرئيسية"),
+        "mark_as_done":
+            MessageLookupByLibrary.simpleMessage("وضع علامة كمكتمل"),
+        "next": MessageLookupByLibrary.simpleMessage("التالي"),
+        "no": MessageLookupByLibrary.simpleMessage("لا"),
         "no_playlists_found": MessageLookupByLibrary.simpleMessage(
             "لم يتم العثور على قوائم تشغيل"),
         "no_videos_found":
             MessageLookupByLibrary.simpleMessage("لم يتم العثور على فيديوهات"),
         "notes": MessageLookupByLibrary.simpleMessage("ملاحظات"),
+        "notitle": MessageLookupByLibrary.simpleMessage("بدون عنوان"),
+        "ok": MessageLookupByLibrary.simpleMessage("موافق"),
+        "open_playlist":
+            MessageLookupByLibrary.simpleMessage("فتح قائمة التشغيل"),
+        "open_video": MessageLookupByLibrary.simpleMessage("فتح الفيديو"),
+        "or_click_save": MessageLookupByLibrary.simpleMessage(
+            "أو انقر على زر حفظ لتطبيق التغييرات"),
         "our_app": MessageLookupByLibrary.simpleMessage(
             "قد يحتوي تطبيقنا على روابط لمواقع أو خدمات طرف ثالث. ليس لدينا أي سيطرة، ونتحمل أي مسؤولية عن محتوى أو سياسات الخصوصية لأي مواقع أو خدمات طرف ثالث."),
+        "pending": MessageLookupByLibrary.simpleMessage("قيد الانتظار"),
         "personal_information":
             MessageLookupByLibrary.simpleMessage("المعلومات الشخصية"),
         "personal_information1": MessageLookupByLibrary.simpleMessage(
-            "1. المعلومات الشخصية: عند استخدامك لتطبيقنا، قد نجمع معلومات شخصية مثل اسمك، عنوان بريدك الإلكتروني، وأي معلومات أخرى تقدمها طواعية."),
-        "personal_information2": MessageLookupByLibrary.simpleMessage(
-            "2. بيانات الاستخدام: قد نجمع معلومات عن كيفية وصولك واستخدامك للتطبيق، بما في ذلك معلومات الجهاز، عنوان IP، نوع المتصفح، والصفحات التي تزورها."),
+            "لا توجد معلومات يجمعها التطبيق"),
+        "personal_information2": MessageLookupByLibrary.simpleMessage(""),
+        "platlist_not_found": MessageLookupByLibrary.simpleMessage(
+            "لم يتم العثور على قائمة التشغيل"),
+        "playlist_added_successfully": MessageLookupByLibrary.simpleMessage(
+            "تمت إضافة قائمة التشغيل بنجاح"),
+        "playlist_already_exists":
+            MessageLookupByLibrary.simpleMessage("قائمة التشغيل موجودة بالفعل"),
+        "playlist_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف قائمة التشغيل بنجاح"),
         "playlist_notes":
             MessageLookupByLibrary.simpleMessage("ملاحظات لقائمة التشغيل"),
         "playlist_url":
             MessageLookupByLibrary.simpleMessage("عنوان URL لقائمة التشغيل"),
+        "please_add_another_playlist_link":
+            MessageLookupByLibrary.simpleMessage(
+                "يرجى إضافة رابط قائمة تشغيل أخرى"),
         "please_enter_a_URL":
             MessageLookupByLibrary.simpleMessage("يرجى إدخال عنوان URL"),
         "please_enter_a_valid_time":
-            MessageLookupByLibrary.simpleMessage("الرجاء ادخال وقت صالح"),
+            MessageLookupByLibrary.simpleMessage("يرجى إدخال وقت صحيح"),
         "please_enter_a_valid_youtube_playlist_URL":
             MessageLookupByLibrary.simpleMessage(
                 "يرجى ادخال عنوان URL لقوائمة التشغيل مصرفي"),
         "please_enter_time":
-            MessageLookupByLibrary.simpleMessage("الرجاء ادخال الوقت"),
+            MessageLookupByLibrary.simpleMessage("يرجى إدخال الوقت"),
+        "processing_ai_response": MessageLookupByLibrary.simpleMessage(
+            "جارٍ معالجة رد الذكاء الاصطناعي ........."),
         "q1": MessageLookupByLibrary.simpleMessage(
             "س: لماذا يستغرق تحميل البيانات في التطبيق وقتًا طويلاً؟"),
         "q2": MessageLookupByLibrary.simpleMessage(
@@ -172,12 +237,20 @@ class MessageLookup extends MessageLookupByLibrary {
             "س: هل يمكنني تعديل مدة الفيديوهات في الـ roadmap؟"),
         "q6": MessageLookupByLibrary.simpleMessage(
             "س: هل يعمل التطبيق مع جميع قوائم تشغيل يوتيوب؟"),
+        "restartTheApplicationToSeeChanges":
+            MessageLookupByLibrary.simpleMessage(
+                "أعد تشغيل التطبيق لرؤية التغييرات"),
         "settings": MessageLookupByLibrary.simpleMessage("اعدادات"),
         "something_went_wrong":
             MessageLookupByLibrary.simpleMessage("حدث خطأ"),
+        "starting_inserting":
+            MessageLookupByLibrary.simpleMessage("جارٍ بدء عملية الإدخال....."),
+        "success": MessageLookupByLibrary.simpleMessage("نجاح"),
+        "task": MessageLookupByLibrary.simpleMessage("مهمة"),
         "the_Playlist_Roadmap":
             MessageLookupByLibrary.simpleMessage("خريطة قائمة التشغيل"),
         "theme": MessageLookupByLibrary.simpleMessage("الثيم"),
+        "theme_changed": MessageLookupByLibrary.simpleMessage("تم تغيير السمة"),
         "third_party":
             MessageLookupByLibrary.simpleMessage("خدمات الطرف الثالث"),
         "time": MessageLookupByLibrary.simpleMessage("الوقت"),
@@ -198,17 +271,28 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("• لتقديم الدعم الفني."),
         "total_Time": MessageLookupByLibrary.simpleMessage("الوقت"),
         "total_Videos": MessageLookupByLibrary.simpleMessage("الفيديوهات"),
+        "unkown": MessageLookupByLibrary.simpleMessage("غير معروف"),
         "url": MessageLookupByLibrary.simpleMessage("عنوان URL"),
         "video": MessageLookupByLibrary.simpleMessage("فيديو"),
+        "video_already_exists":
+            MessageLookupByLibrary.simpleMessage("الفيديو موجود بالفعل"),
+        "video_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف الفيديو بنجاح"),
+        "videos": MessageLookupByLibrary.simpleMessage("فيديوهات"),
+        "videos_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("تم حذف الفيديوهات بنجاح"),
         "view_Playlist":
             MessageLookupByLibrary.simpleMessage("عرض قائمة التشغيل"),
         "view_Playlist_Roadmap":
             MessageLookupByLibrary.simpleMessage("عرض خريطة قائمة التشغيل"),
+        "watch_flow": MessageLookupByLibrary.simpleMessage("تدفق المشاهدة"),
+        "watch_video": MessageLookupByLibrary.simpleMessage("مشاهدة الفيديو"),
         "we_may_update": MessageLookupByLibrary.simpleMessage(
             "قد نقوم بتحديث سياسة الخصوصية الخاصة بنا من وقت لآخر. سنقوم بإعلامك بأي تغييرات من خلال نشر سياسة الخصوصية الجديدة على هذه الصفحة. يُنصح بمراجعة سياسة الخصوصية هذه بشكل دوري لأي تغييرات."),
         "we_take_privacy_seriously": MessageLookupByLibrary.simpleMessage(
-            "نحن نأخذ خصوصيتك على محمل الجد. باستخدام تطبيقنا، نحن ملتزمون بحماية خصوصيتك. توضح سياسة الخصوصية هذه كيفية جمع معلوماتك واستخدامها وحمايتها عند استخدامك لتطبيقنا [اسم التطبيق]."),
+            "نحن نأخذ خصوصيتك على محمل الجد. باستخدام تطبيقنا، نحن ملتزمون بحماية خصوصيتك. توضح سياسة الخصوصية هذا عند استخدامك لتطبيقنا Whatch Flow."),
         "we_take_security": MessageLookupByLibrary.simpleMessage(
-            "نحن نأخذ أمان معلوماتك الشخصية على محمل الجد ونطبق تدابير معقولة لحمايتها. ومع ذلك، يُرجى تذكر أن أي وسيلة لنقل المعلومات عبر الإنترنت أو طريقة لتخزينها إلكترونيًا ليست آمنة بنسبة 100%.")
+            "نحن نأخذ أمان معلوماتك الشخصية على محمل الجد ونطبق تدابير معقولة لحمايتها. ومع ذلك، يُرجى تذكر أن أي وسيلة لنقل المعلومات عبر الإنترنت أو طريقة لتخزينها إلكترونيًا ليست آمنة بنسبة 100%."),
+        "yes": MessageLookupByLibrary.simpleMessage("نعم")
       };
 }

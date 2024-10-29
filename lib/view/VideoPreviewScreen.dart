@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:watch_flow/generated/l10n.dart';
 import '../data/databases.dart';
 
 class VideoPreviewScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
       body: _isLoading || !_isPlaylistInfoLoaded
           ? const Center(child: CircularProgressIndicator())
           : playlistAllVideos.isEmpty
-              ? const Center(child: Text('No videos found'))
+              ?  Center(child: Text(S.of(context).no_videos_found))
               : ListView.builder(
                   itemCount: playlistAllVideos.length,
                   itemBuilder: (context, index) {
@@ -97,7 +98,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                                 ),
                                 const SizedBox(height: 8.0),
                                 Text(
-                                  'Duration: ${video['video_duration']}',
+                                  '${S.of(context).duration}: ${video['video_duration']}',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
@@ -114,18 +115,18 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                                         if (await canLaunch(url)) {
                                           await launch(url);
                                         } else {
-                                          throw 'Could not launch $url';
+                                          throw '${S.of(context).could_not_launch} $url';
                                         }
                                       },
-                                      child: const Text(
-                                        'Watch Video',
+                                      child:  Text(
+                                        S.of(context).watch_video,
                                         style: TextStyle(color: Colors.blue),
                                       ),
                                     ),
                                     Text(
                                       video['video_status'] == 1
-                                          ? 'Completed'
-                                          : 'Pending',
+                                          ? S.of(context).completed
+                                          : S.of(context).pending,
                                       style: TextStyle(
                                         color: video['video_status'] == 1
                                             ? Colors.green

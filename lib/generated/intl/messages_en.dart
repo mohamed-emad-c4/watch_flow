@@ -38,7 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "DataEncryption": MessageLookupByLibrary.simpleMessage(
             "Data Encryption: We use industry-standard encryption to protect your data."),
         "DidntFindAnswer": MessageLookupByLibrary.simpleMessage(
-            "If you didn\'t find the answer you\'re looking for, feel free to contact us directly:"),
+            "If you didn\'t find the answer you\'re looking for, feel free to contact us"),
         "EmailUs": MessageLookupByLibrary.simpleMessage("Email Us"),
         "FAQ": MessageLookupByLibrary.simpleMessage("FAQ"),
         "Facebook": MessageLookupByLibrary.simpleMessage("Facebook"),
@@ -97,18 +97,40 @@ class MessageLookup extends MessageLookupByLibrary {
         "a_q1": MessageLookupByLibrary.simpleMessage(
             "A: There can be several factors contributing to data loading delays, including:"),
         "add_Playlist": MessageLookupByLibrary.simpleMessage("Add Playlist"),
+        "ai_response": MessageLookupByLibrary.simpleMessage("AI Response"),
         "all_Playlists": MessageLookupByLibrary.simpleMessage("All Playlists"),
         "all_Videos": MessageLookupByLibrary.simpleMessage("All Videos"),
         "all_days_roadmap":
             MessageLookupByLibrary.simpleMessage("All Days Roadmap"),
         "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
+        "are_you_sure_you_want_to_delete_this_playlist":
+            MessageLookupByLibrary.simpleMessage(
+                "Are you sure you want to delete this playlist?"),
+        "are_you_sure_you_want_to_delete_this_video":
+            MessageLookupByLibrary.simpleMessage(
+                "Are you sure you want to delete this video?"),
+        "cancle": MessageLookupByLibrary.simpleMessage("Cancel"),
         "change_this": MessageLookupByLibrary.simpleMessage(
             "Changes to This Privacy Policy"),
+        "check_if_the_playlist_exist": MessageLookupByLibrary.simpleMessage(
+            "Check if the playlist exists"),
+        "check_if_the_url":
+            MessageLookupByLibrary.simpleMessage("Check if the URL is correct"),
+        "completed": MessageLookupByLibrary.simpleMessage("Completed"),
+        "confirm_delete":
+            MessageLookupByLibrary.simpleMessage("Confirm Delete"),
         "could_not_launch":
             MessageLookupByLibrary.simpleMessage("Could not launch"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "data_security": MessageLookupByLibrary.simpleMessage("Data Security"),
+        "day": MessageLookupByLibrary.simpleMessage("Day"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "delete_playlist":
+            MessageLookupByLibrary.simpleMessage("Delete Playlist"),
+        "delete_video": MessageLookupByLibrary.simpleMessage("Delete Video"),
+        "done": MessageLookupByLibrary.simpleMessage("Done"),
+        "done_inserting":
+            MessageLookupByLibrary.simpleMessage("Done inserting"),
         "duration": MessageLookupByLibrary.simpleMessage("Duration"),
         "effective_date": MessageLookupByLibrary.simpleMessage(
             "Publishing Date : October 1, 2024"),
@@ -121,34 +143,74 @@ class MessageLookup extends MessageLookupByLibrary {
         "enter_time_in_minutes": MessageLookupByLibrary.simpleMessage(
             "Please enter the time in minutes"),
         "error": MessageLookupByLibrary.simpleMessage("error"),
+        "failed": MessageLookupByLibrary.simpleMessage("Failed"),
+        "feature1":
+            MessageLookupByLibrary.simpleMessage("- Get links from YouTube."),
+        "feature2":
+            MessageLookupByLibrary.simpleMessage("- Add notes for each video."),
+        "feature3":
+            MessageLookupByLibrary.simpleMessage("- Get links from YouTube."),
+        "fetching_videos_from_playlist": MessageLookupByLibrary.simpleMessage(
+            "Fetching videos from playlist........"),
+        "help_needed": MessageLookupByLibrary.simpleMessage(
+            "If you need help, please contact us"),
         "how_we_use_your_information":
             MessageLookupByLibrary.simpleMessage("How We Use Your Information"),
         "information_we_collect":
             MessageLookupByLibrary.simpleMessage("Information We Collect"),
         "insert": MessageLookupByLibrary.simpleMessage("Insert"),
+        "insert_links": MessageLookupByLibrary.simpleMessage("Insert Links"),
+        "insert_notes": MessageLookupByLibrary.simpleMessage("Insert Notes"),
+        "insert_roadmap":
+            MessageLookupByLibrary.simpleMessage("Insert Roadmap"),
         "invalid_playlist_URL":
             MessageLookupByLibrary.simpleMessage("Invalid playlist URL"),
         "invalid_playlist_url":
             MessageLookupByLibrary.simpleMessage("Invalid playlist URL"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "language_changed":
+            MessageLookupByLibrary.simpleMessage("Language changed"),
+        "learinig_task": MessageLookupByLibrary.simpleMessage("Learning Task"),
         "lightMode": MessageLookupByLibrary.simpleMessage("Light Mode"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "main_features": MessageLookupByLibrary.simpleMessage("Main Features"),
+        "mark_as_done": MessageLookupByLibrary.simpleMessage("Mark as Done"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "no": MessageLookupByLibrary.simpleMessage("No"),
         "no_playlists_found":
             MessageLookupByLibrary.simpleMessage("No playlists found"),
         "no_videos_found":
             MessageLookupByLibrary.simpleMessage("No videos found"),
         "notes": MessageLookupByLibrary.simpleMessage("Notes"),
+        "notitle": MessageLookupByLibrary.simpleMessage("No Title"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "open_playlist": MessageLookupByLibrary.simpleMessage("Open Playlist"),
+        "open_video": MessageLookupByLibrary.simpleMessage("Open Video"),
+        "or_click_save": MessageLookupByLibrary.simpleMessage(
+            "Or click Save Bottom To Apply changes"),
         "our_app": MessageLookupByLibrary.simpleMessage(
             "Our app may contain links to third-party sites or services. We have no control over, and assume no responsibility for, the content or privacy policies of any third-party sites or services."),
+        "pending": MessageLookupByLibrary.simpleMessage("Pending"),
         "personal_information":
             MessageLookupByLibrary.simpleMessage("Personal Information"),
         "personal_information1": MessageLookupByLibrary.simpleMessage(
             "1. Personal Information: When you use our app, we may collect personal information such as your name, email address, and any other information you provide voluntarily."),
         "personal_information2": MessageLookupByLibrary.simpleMessage(
             "2. Usage Data: We may collect information about how you access and use the app, including device information, IP address, browser type, and pages you visit."),
+        "platlist_not_found":
+            MessageLookupByLibrary.simpleMessage("Playlist not found"),
+        "playlist_added_successfully":
+            MessageLookupByLibrary.simpleMessage("Playlist added successfully"),
+        "playlist_already_exists":
+            MessageLookupByLibrary.simpleMessage("Playlist already exists"),
+        "playlist_deleted_successfully": MessageLookupByLibrary.simpleMessage(
+            "Playlist deleted successfully"),
         "playlist_notes":
             MessageLookupByLibrary.simpleMessage("Playlist Notes"),
         "playlist_url": MessageLookupByLibrary.simpleMessage("Playlist URL"),
+        "please_add_another_playlist_link":
+            MessageLookupByLibrary.simpleMessage(
+                "Please add another playlist link"),
         "please_enter_a_URL":
             MessageLookupByLibrary.simpleMessage("Please enter a URL"),
         "please_enter_a_valid_time":
@@ -158,6 +220,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Please enter a valid YouTube playlist URL"),
         "please_enter_time":
             MessageLookupByLibrary.simpleMessage("Please enter time"),
+        "processing_ai_response": MessageLookupByLibrary.simpleMessage(
+            "Processing AI Response ........."),
         "q1": MessageLookupByLibrary.simpleMessage(
             "Q: Why does it take a long time to load data in the app?"),
         "q2": MessageLookupByLibrary.simpleMessage(
@@ -170,12 +234,20 @@ class MessageLookup extends MessageLookupByLibrary {
             "Q: Can I modify the durations of the videos in the roadmap?"),
         "q6": MessageLookupByLibrary.simpleMessage(
             "Q: Does the app work with all YouTube playlists?"),
+        "restartTheApplicationToSeeChanges":
+            MessageLookupByLibrary.simpleMessage(
+                "Restart the application to see changes"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "something_went_wrong":
             MessageLookupByLibrary.simpleMessage("Something went wrong"),
+        "starting_inserting": MessageLookupByLibrary.simpleMessage(
+            "Starting the insertion process....."),
+        "success": MessageLookupByLibrary.simpleMessage("Success"),
+        "task": MessageLookupByLibrary.simpleMessage("Task"),
         "the_Playlist_Roadmap":
             MessageLookupByLibrary.simpleMessage("The Playlist Roadmap"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
+        "theme_changed": MessageLookupByLibrary.simpleMessage("Theme Changed"),
         "third_party":
             MessageLookupByLibrary.simpleMessage("Third Party Services"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
@@ -196,16 +268,27 @@ class MessageLookup extends MessageLookupByLibrary {
             "• To provide customer support."),
         "total_Time": MessageLookupByLibrary.simpleMessage("Time"),
         "total_Videos": MessageLookupByLibrary.simpleMessage("Videos"),
+        "unkown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "url": MessageLookupByLibrary.simpleMessage("URL"),
         "video": MessageLookupByLibrary.simpleMessage("Video"),
+        "video_already_exists":
+            MessageLookupByLibrary.simpleMessage("Video already exists"),
+        "video_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("Video deleted successfully"),
+        "videos": MessageLookupByLibrary.simpleMessage("Videos"),
+        "videos_deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("Videos deleted successfully"),
         "view_Playlist": MessageLookupByLibrary.simpleMessage("View Playlist"),
         "view_Playlist_Roadmap":
             MessageLookupByLibrary.simpleMessage("View Playlist Roadmap"),
+        "watch_flow": MessageLookupByLibrary.simpleMessage("Watch Flow"),
+        "watch_video": MessageLookupByLibrary.simpleMessage("Watch Video"),
         "we_may_update": MessageLookupByLibrary.simpleMessage(
             "We may update our privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page. You are advised to review this privacy policy periodically for any changes."),
         "we_take_privacy_seriously": MessageLookupByLibrary.simpleMessage(
             "We take your privacy seriously. By using our app, we are committed to protecting your privacy. This privacy policy outlines how we collect, use, and safeguard your information when you use our app [App Name]."),
         "we_take_security": MessageLookupByLibrary.simpleMessage(
-            "We take the security of your personal information seriously and implement reasonable measures to protect it. However, please remember that no method of transmission over the Internet or method of electronic storage is 100% secure.")
+            "We take the security of your personal information seriously and implement reasonable measures to protect it. However, please remember that no method of transmission over the Internet or method of electronic storage is 100% secure."),
+        "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };
 }
