@@ -194,7 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "personal_information":
             MessageLookupByLibrary.simpleMessage("Personal Information"),
         "personal_information1": MessageLookupByLibrary.simpleMessage(
-            "1. Personal Information: When you use our app, we may collect personal information such as your name, email address, and any other information you provide voluntarily."),
+            "we donot collect any personal information."),
         "personal_information2": MessageLookupByLibrary.simpleMessage(
             "2. Usage Data: We may collect information about how you access and use the app, including device information, IP address, browser type, and pages you visit."),
         "platlist_not_found":
@@ -286,7 +286,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "we_may_update": MessageLookupByLibrary.simpleMessage(
             "We may update our privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page. You are advised to review this privacy policy periodically for any changes."),
         "we_take_privacy_seriously": MessageLookupByLibrary.simpleMessage(
-            "We take your privacy seriously. By using our app, we are committed to protecting your privacy. This privacy policy outlines how we collect, use, and safeguard your information when you use our app [App Name]."),
+            "We take your privacy seriously. By using our app, we are committed to protecting your privacy. when you use our app Watch Flow."),
         "we_take_security": MessageLookupByLibrary.simpleMessage(
             "We take the security of your personal information seriously and implement reasonable measures to protect it. However, please remember that no method of transmission over the Internet or method of electronic storage is 100% secure."),
         "yes": MessageLookupByLibrary.simpleMessage("Yes")
