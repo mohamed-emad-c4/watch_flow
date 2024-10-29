@@ -22,7 +22,6 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^10.7.0
   cached_network_image: ^3.4.1
-  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -35,17 +34,6 @@ dev_dependencies:
 #   image_path: "assets/images/icon/launcher_icon.png"  # مسار أيقونة التطبيق
 #   adaptive_icon_background: "#FFFFFF"        # لون الخلفية للأيقونات المتكيفة (خاص بأندرويد)
 #   adaptive_icon_foreground: "assets/images/icon/launcher_icon.png"  # الطبقة الأمامية للأيقونة المتكيفة
-icons_launcher:
-  platforms:
-    android:
-      enable: true
-    ios:
-      enable: true
-  image_path: assets/images/icon/icone.jpg
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: assets/images/icon/icone.jpg
-  assets:
-    - assets/images/
-    - assets/images/icon/
+
 flutter:
   uses-material-design: true

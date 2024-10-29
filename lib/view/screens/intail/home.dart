@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -45,8 +46,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
     playlists = DatabaseHelper().getPlaylists();
-    
-
   }
 
   @override
@@ -95,7 +94,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           itemBuilder: (context, index) {
             final playlist = snapshot.data![index];
-            
+
             return _buildPlaylistItem(context, playlist);
           },
         );
@@ -119,15 +118,20 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12.0)),
-              child: Image.network(
-                playlist['playlist_image'] ?? 'https://via.placeholder.com/150',
-                fit: BoxFit.cover,
-                height: 150,
-                width: double.infinity,
-              ),
-            ),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(12.0)),
+                child: CachedNetworkImage(
+                  imageUrl: playlist['playlist_image'] ??
+                      'https://via.placeholder.com/150',
+                  fit: BoxFit.cover,
+                  height: 150,
+                  width: double.infinity,
+                  placeholder: (context, url) => const Center(
+                      child:
+                          CircularProgressIndicator()), // عنصر يظهر أثناء التحميل
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error), // عنصر يظهر في حالة حدوث خطأ
+                )),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

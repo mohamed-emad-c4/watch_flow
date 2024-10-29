@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:watch_flow/generated/l10n.dart';
@@ -73,17 +74,22 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12.0),
-                              topRight: Radius.circular(12.0),
-                            ),
-                            child: Image.network(
-                              video['video_image'],
-                              height: 180,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12.0),
+                                topRight: Radius.circular(12.0),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: video['video_image'],
+                                height: 180,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child:
+                                        CircularProgressIndicator()), // يظهر أثناء التحميل
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error,
+                                        color: Colors.red), // يظهر عند حدوث خطأ
+                              )),
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
