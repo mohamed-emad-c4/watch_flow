@@ -57,7 +57,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
       body: _isLoading || !_isPlaylistInfoLoaded
           ? const Center(child: CircularProgressIndicator())
           : playlistAllVideos.isEmpty
-              ?  Center(child: Text(S.of(context).no_videos_found))
+              ? Center(child: Text(S.of(context).no_videos_found))
               : ListView.builder(
                   itemCount: playlistAllVideos.length,
                   itemBuilder: (context, index) {
@@ -111,16 +111,25 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        final url = video['video_url'];
-                                        if (await canLaunch(url)) {
-                                          await launch(url);
+                                        final url =
+                                            Uri.parse(video['video_url']);
+                                        if (await canLaunchUrl(url)) {
+                                          await launchUrl(url,
+                                              mode: LaunchMode
+                                                  .externalApplication);
                                         } else {
-                                          throw '${S.of(context).could_not_launch} $url';
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    '${S.of(context).could_not_launch} $url')),
+                                          );
                                         }
                                       },
-                                      child:  Text(
+                                      child: Text(
                                         S.of(context).watch_video,
-                                        style: TextStyle(color: Colors.blue),
+                                        style:
+                                            const TextStyle(color: Colors.blue),
                                       ),
                                     ),
                                     Text(
