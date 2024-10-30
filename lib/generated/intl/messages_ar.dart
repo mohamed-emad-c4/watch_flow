@@ -190,7 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("فتح قائمة التشغيل"),
         "open_video": MessageLookupByLibrary.simpleMessage("فتح الفيديو"),
         "or_click_save": MessageLookupByLibrary.simpleMessage(
-            "أو انقر على زر حفظ لتطبيق التغييرات"),
+            " لتطبيق التغييرات"),
         "our_app": MessageLookupByLibrary.simpleMessage(
             "قد يحتوي تطبيقنا على روابط لمواقع أو خدمات طرف ثالث. ليس لدينا أي سيطرة، ونتحمل أي مسؤولية عن محتوى أو سياسات الخصوصية لأي مواقع أو خدمات طرف ثالث."),
         "pending": MessageLookupByLibrary.simpleMessage("قيد الانتظار"),
@@ -250,7 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_Playlist_Roadmap":
             MessageLookupByLibrary.simpleMessage("خريطة قائمة التشغيل"),
         "theme": MessageLookupByLibrary.simpleMessage("الثيم"),
-        "theme_changed": MessageLookupByLibrary.simpleMessage("تم تغيير السمة"),
+        "theme_changed": MessageLookupByLibrary.simpleMessage("تم تغير "),
         "third_party":
             MessageLookupByLibrary.simpleMessage("خدمات الطرف الثالث"),
         "time": MessageLookupByLibrary.simpleMessage("الوقت"),

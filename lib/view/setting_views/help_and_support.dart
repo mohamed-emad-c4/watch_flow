@@ -57,12 +57,13 @@ class HelpAndSupportPage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Center(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 40),
                       BuildSocialMediaButton(
                         context,
-                        icon: const FaIcon(FontAwesomeIcons.facebook),
+                        icon: const FaIcon(FontAwesomeIcons.message),
                         label: S.of(context).Messenger,
                         color: Colors.blue[700]!,
                         onTap: _contactViaMessenger,
@@ -103,7 +104,7 @@ class HelpAndSupportPage extends StatelessWidget {
 void _sendEmail() async {
   final Uri emailUri = Uri(
     scheme: 'mailto',
-    path: 'zemax.c4@gmail.com',
+    path: 'flutternexus@gmail.com',
     query:
         'subject=Help%20Needed&body=Hi%20there,%0D%0A%0D%0A', // Add more query parameters as needed
   );
@@ -126,11 +127,11 @@ void _sendEmail() async {
 /// The [message] is the pre-filled message to send to the developer.
 ///
 /// If the WhatsApp app is not installed on the device,
-/// a snackbar will be shown with an error message.
+/// a snackbar will be shown with an error message.https://www.facebook.com/profile.php?id=61563607514517
 
 void _contactViaMessenger() async {
   // Replace with your Facebook page URL or Messenger link
-  final Uri messengerUri = Uri.parse('https://m.me/zemax.c4');
+  final Uri messengerUri = Uri.parse('https://m.me/61563607514517');
   if (await canLaunch(messengerUri.toString())) {
     await launch(messengerUri.toString());
   } else {
@@ -142,7 +143,7 @@ void _contactViaMessenger() async {
 
 void _contactViaTwitter() async {
   // Replace with your Twitter handle
-  final Uri twitterUri = Uri.parse('https://twitter.com/zemax_c4');
+  final Uri twitterUri = Uri.parse('https://x.com/FlutterNex64549');
   if (await canLaunch(twitterUri.toString())) {
     await launch(twitterUri.toString());
   } else {
@@ -153,7 +154,7 @@ void _contactViaTwitter() async {
 }
 
 void _contactViaInstagram() async {
-  final Uri instagramUri = Uri.parse('https://instagram.com/mohamed_emad_c4');
+  final Uri instagramUri = Uri.parse('https://www.instagram.com/flutternexus/');
   if (await canLaunch(instagramUri.toString())) {
     await launch(instagramUri.toString());
   } else {

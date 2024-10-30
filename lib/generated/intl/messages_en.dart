@@ -187,7 +187,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "open_playlist": MessageLookupByLibrary.simpleMessage("Open Playlist"),
         "open_video": MessageLookupByLibrary.simpleMessage("Open Video"),
         "or_click_save": MessageLookupByLibrary.simpleMessage(
-            "Or click Save Bottom To Apply changes"),
+            "To Apply changes"),
         "our_app": MessageLookupByLibrary.simpleMessage(
             "Our app may contain links to third-party sites or services. We have no control over, and assume no responsibility for, the content or privacy policies of any third-party sites or services."),
         "pending": MessageLookupByLibrary.simpleMessage("Pending"),
