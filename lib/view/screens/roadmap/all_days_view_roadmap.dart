@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:watch_flow/generated/l10n.dart';
-
 import '../../../data/databases.dart';
 import '../../../model/playList.dart';
 
@@ -36,9 +35,7 @@ class _MyApp1State extends State<MyApp1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          S.of(context).all_Videos,
-        ),
+        title: Text(S.of(context).all_Videos),
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -82,15 +79,10 @@ class _VideoCardState extends State<VideoCard> {
 
   void _markAsDone() async {
     try {
-      // استدعاء toggleVideoStatus لتبديل الحالة في قاعدة البيانات
       await DatabaseHelper().toggleVideoStatus(widget.video.videoUrl, isDone);
-
-      // تحديث واجهة المستخدم بعد نجاح العملية
       setState(() {
         isDone = !isDone;
       });
-
-      // تحديث حالة الفيديو نفسها
       widget.video.isDone = isDone;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,8 +93,9 @@ class _VideoCardState extends State<VideoCard> {
 
   Future<void> _launchUrl(String url) async {
     try {
-      if (await canLaunch(url)) {
-        await launch(url);
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
       } else {
         throw '${S.of(context).could_not_launch} $url';
       }
@@ -139,107 +132,154 @@ class _VideoCardState extends State<VideoCard> {
     final cardWidth = screenWidth * 0.9;
     final imageWidth = screenWidth * 0.3;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: SizedBox(
-          width: cardWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isLargeScreen =
+            constraints.maxWidth > 800; // Adjust threshold as needed
+        final cardWidth = isLargeScreen
+            ? constraints.maxWidth * 0.7
+            : constraints.maxWidth * 0.9;
+        final imageWidth = isLargeScreen ? 200.0 : constraints.maxWidth * 0.3;
+
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          elevation: 5,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SizedBox(
+              width: cardWidth,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.video.videoImage,
-                        width: imageWidth,
-                        height: 80,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                            child:
-                                CircularProgressIndicator()), // يظهر أثناء التحميل
-                        errorWidget: (context, url, error) => const Icon(
-                            Icons.error,
-                            color: Colors.red), // يظهر عند حدوث خطأ
-                      )),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.video.videoTitle,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '${S.of(context).duration}: ${widget.video.videoDuration}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.open_in_new, color: Colors.blue),
-                    onPressed: () => _launchUrl(widget.video.videoUrl),
-                    tooltip: S.of(context).open_video,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.book, color: Colors.orange),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(S.of(context).learinig_task),
-                            content: Text(widget.video.learningTask),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text(S.of(context).ok),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
+                  isLargeScreen
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.video.videoImage,
+                                width: imageWidth,
+                                height: 120,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error, color: Colors.red),
                               ),
-                            ],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.video.videoTitle,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: isLargeScreen ? 20 : 16,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              '${S.of(context).duration}: ${widget.video.videoDuration}',
+                              style: TextStyle(
+                                fontSize: isLargeScreen ? 14 : 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.video.videoImage,
+                                width: imageWidth,
+                                height: 80,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error, color: Colors.red),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.video.videoTitle,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: isLargeScreen ? 20 : 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    '${S.of(context).duration}: ${widget.video.videoDuration}',
+                                    style: TextStyle(
+                                      fontSize: isLargeScreen ? 14 : 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.open_in_new, color: Colors.blue),
+                        onPressed: () => _launchUrl(widget.video.videoUrl),
+                        tooltip: S.of(context).open_video,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.book, color: Colors.orange),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(S.of(context).learinig_task),
+                                content: Text(widget.video.learningTask),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text(S.of(context).ok),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    tooltip: S.of(context).learinig_task,
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      widget.video.isDone
-                          ? Icons.check_circle
-                          : Icons.check_circle_outline,
-                      color: widget.video.isDone ? Colors.green : Colors.grey,
-                    ),
-                    onPressed: _markAsDone,
-                    tooltip: S.of(context).mark_as_done,
+                        tooltip: S.of(context).learinig_task,
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          widget.video.isDone
+                              ? Icons.check_circle
+                              : Icons.check_circle_outline,
+                          color:
+                              widget.video.isDone ? Colors.green : Colors.grey,
+                        ),
+                        onPressed: _markAsDone,
+                        tooltip: S.of(context).mark_as_done,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -251,7 +291,6 @@ class VideoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Group videos by video_days
     Map<int, List<Video>> groupedVideos = {};
     for (var video in videos) {
       if (!groupedVideos.containsKey(video.videoDays)) {

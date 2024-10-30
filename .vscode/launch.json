@@ -1,6 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [
+    
     {
       "name": "watch_flow (Flutter CPH2043)",
       "request": "launch",

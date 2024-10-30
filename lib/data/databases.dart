@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:watch_flow/generated/l10n.dart';
-
 import '../model/playList.dart';
-import '../view/screens/roadmap/all_days_view_roadmap.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -48,9 +46,8 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE videos_info(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-         
         video_url TEXT,
-         video_tittle TEXT,
+        video_tittle TEXT,
         video_image TEXT,
         video_duration TEXT,
         learning_task TEXT,
@@ -117,26 +114,21 @@ class DatabaseHelper {
 
   Future<List<Video>> getVideosByPlaylistIdAI(String playlistId) async {
     final db = await database;
-
-    // جلب الفيديوهات من قاعدة البيانات
     final List<Map<String, dynamic>> maps = await db.query(
       'videos_info',
       where: 'video_playlist_id = ?',
       whereArgs: [playlistId],
     );
-
-    // تحويل النتيجة إلى قائمة من الفيديوهات مع تضمين حالة is_done
     return List.generate(maps.length, (i) {
       return Video(
-        videoId:
-            maps[i]['video_id'] ?? '', // إذا كان null، استبدله بسلسلة فارغة
+        videoId: maps[i]['video_id'] ?? '',
         videoTitle: maps[i]['video_tittle'] ?? '',
         videoImage: maps[i]['video_image'] ?? '',
         videoUrl: maps[i]['video_url'] ?? '',
         videoDuration: maps[i]['video_duration'] ?? '',
-        videoDays: maps[i]['video_days'] ?? 0, // توفير قيمة افتراضية للأرقام
+        videoDays: maps[i]['video_days'] ?? 0,
         learningTask: maps[i]['learning_task'] ?? '',
-        isDone: maps[i]['video_status'] == 1, // التعامل مع الحقل كقيمة منطقية
+        isDone: maps[i]['video_status'] == 1,
       );
     });
   }
@@ -164,24 +156,20 @@ class DatabaseHelper {
       {
         'video_days': newDays,
         "learning_task": learningVideoTask
-      }, // تحديث فقط video_days
-      where: 'video_url = ?', // استخدام URL الفيديو كمعيار للتحديث
-      whereArgs: [videoUrl], // تمرير URL الفيديو
+      },
+      where: 'video_url = ?',
+      whereArgs: [videoUrl],
     );
   }
 
   Future<void> toggleVideoStatus(String videoUrl, bool currentStatus) async {
     Database db = await database;
-
-    // قلب الحالة الحالية للفيديو
     bool newStatus = !currentStatus;
-
-    // تحديث الحالة الجديدة للفيديو في قاعدة البيانات
     await db.update(
       'videos_info',
       {
         'video_status': newStatus ? 1 : 0
-      }, // تحديث العمود is_done بناءً على الحالة الجديدة
+      },
       where: 'video_url = ?',
       whereArgs: [videoUrl],
     );

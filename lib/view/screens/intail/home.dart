@@ -16,18 +16,21 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UpdateHomeCubit, UpdateHomeState>(
-      builder: (context, state) {
-        if (state is UpdateHomeLoaded || state is UpdateHomeInitial) {
-          return const PlaylistScreen();
-        } else if (state is UpdateHomeLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is UpdateHomeError) {
-          return Center(child: Text('${S.of(context).error}: '));
-        } else {
-          return Center(child: Text(S.of(context).something_went_wrong));
-        }
-      },
+    return BlocProvider(
+      create: (context) => UpdateHomeCubit(),
+      child: BlocBuilder<UpdateHomeCubit, UpdateHomeState>(
+        builder: (context, state) {
+          if (state is UpdateHomeLoaded || state is UpdateHomeInitial) {
+            return const PlaylistScreen();
+          } else if (state is UpdateHomeLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is UpdateHomeError) {
+            return Center(child: Text(S.of(context).error));
+          } else {
+            return Center(child: Text(S.of(context).something_went_wrong));
+          }
+        },
+      ),
     );
   }
 }
@@ -108,56 +111,110 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       onTap: () {
         _showBottomSheet(context, playlist);
       },
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        elevation: 4.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12.0)),
-                child: CachedNetworkImage(
-                  imageUrl: playlist['playlist_image'] ??
-                      'https://via.placeholder.com/150',
-                  fit: BoxFit.cover,
-                  height: 150,
-                  width: double.infinity,
-                  placeholder: (context, url) => const Center(
-                      child:
-                          CircularProgressIndicator()), // عنصر يظهر أثناء التحميل
-                  errorWidget: (context, url, error) =>
-                      const Icon(Icons.error), // عنصر يظهر في حالة حدوث خطأ
-                )),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
+      child: LayoutBuilder(
+  builder: (context, constraints) {
+    final bool isLargeScreen = constraints.maxWidth > 800; // Define large screen threshold
+    final imageHeight = isLargeScreen ? 200.0 : 150.0;
+    final imageWidth = isLargeScreen ? constraints.maxWidth * 0.4 : double.infinity;
+    final fontSizeTitle = isLargeScreen ? 22.0 : 18.0;
+    final fontSizeSubtitle = isLargeScreen ? 16.0 : 14.0;
+    final cardPadding = isLargeScreen ? const EdgeInsets.all(24.0) : const EdgeInsets.all(16.0);
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      elevation: 4.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: cardPadding,
+        child: isLargeScreen
+            ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    playlist['playlist_real_name'] ?? S.of(context).notitle,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  // Image section for large screens
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: CachedNetworkImage(
+                      imageUrl: playlist['playlist_image'] ?? 'https://via.placeholder.com/150',
+                      fit: BoxFit.cover,
+                      height: imageHeight,
+                      width: imageWidth,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "${S.of(context).total_Videos}: ${playlist['playlist_total_videos'] ?? 0}    ${S.of(context).total_Time}: ${playlist['playlist_total_time'] ?? 0}",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
+                  const SizedBox(width: 16), // Space between image and text
+                  // Text content for large screens
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          playlist['playlist_real_name'] ?? S.of(context).notitle,
+                          style: TextStyle(
+                            fontSize: fontSizeTitle,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "${S.of(context).total_Videos}: ${playlist['playlist_total_videos'] ?? 0}    ${S.of(context).total_Time}: ${playlist['playlist_total_time'] ?? 0}",
+                          style: TextStyle(
+                            fontSize: fontSizeSubtitle,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image section for small screens
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12.0)),
+                    child: CachedNetworkImage(
+                      imageUrl: playlist['playlist_image'] ?? 'https://via.placeholder.com/150',
+                      fit: BoxFit.cover,
+                      height: imageHeight,
+                      width: double.infinity,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          playlist['playlist_real_name'] ?? S.of(context).notitle,
+                          style: TextStyle(
+                            fontSize: fontSizeTitle,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "${S.of(context).total_Videos}: ${playlist['playlist_total_videos'] ?? 0}    ${S.of(context).total_Time}: ${playlist['playlist_total_time'] ?? 0}",
+                          style: TextStyle(
+                            fontSize: fontSizeSubtitle,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
+    );
+  },
+)
+
     );
   }
 
@@ -254,9 +311,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         Get.snackbar(
           S.of(context).success,
           S.of(context).playlist_deleted_successfully,
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.red,
           colorText: Colors.white,
         );
       } catch (e) {

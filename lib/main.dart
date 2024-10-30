@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:watch_flow/logic/cubit/updata_app_cubit.dart';
 import 'package:watch_flow/logic/cubit/update_home_cubit.dart';
 import 'package:watch_flow/logic/globalVaribul.dart';
@@ -12,6 +16,12 @@ import 'logic/cubit/updata_app_state.dart';
 import 'view/screens/intail/home.dart';
 
 void main() async {
+    if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    // Initialize sqflite_common_ffi for desktop platforms
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
 
   final sharedPref = SharePrefrenceClass();
