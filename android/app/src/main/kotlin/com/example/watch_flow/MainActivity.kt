@@ -1,4 +1,4 @@
-package com.example.watch_flow
+package com.flutternexus.watchFlow
 
 import io.flutter.embedding.android.FlutterActivity
 
