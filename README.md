@@ -1,6 +1,3 @@
-Here’s a **README.md** file for your **Watch Flow** repository:  
-
----
 
 # **Watch Flow** 🎥⏳  
 **A smart video playlist manager built with Flutter**  
